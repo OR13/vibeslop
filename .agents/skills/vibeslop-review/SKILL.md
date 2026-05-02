@@ -30,8 +30,8 @@ Front-load context:
   how prior runs evolved.
 - **Repo state** — what merged since the build artifact, current diff,
   release tags, deploy state if visible.
-- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
-  `.vibeslop/config.yml`. Note declared trackers / observability / stack.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
+  declared trackers / observability / stack.
 - **Available integrations** — list which MCPs / CLIs are present
   (analytics: Clarity / GA / Mixpanel / Amplitude; trackers: Atlassian /
   Linear; CRM: HubSpot; reliability: Sentry; deploy: Vercel / GitHub).
@@ -40,8 +40,8 @@ Front-load context:
 
 ### Mode detection (solo-vibe-coder vs team)
 
-Same rules as build (`.vibeslop/config.yml` → `CODEOWNERS` → committer
-diversity → solo default). State the detected mode at top of Round 1.
+Same rules as build (`CODEOWNERS` → committer diversity → solo default).
+State the detected mode at top of Round 1.
 
 In solo mode the offers in each round can include *"want me to pull
 the retention curve / session replays / support themes now?"* — the

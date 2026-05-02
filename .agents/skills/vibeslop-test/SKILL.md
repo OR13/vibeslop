@@ -33,16 +33,16 @@ Front-load context:
   tests, E2E (Playwright / Cypress), regression suite, accessibility
   setup (axe / pa11y), CI config (`.github/workflows/`), coverage
   thresholds.
-- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
-  `.vibeslop/config.yml`. Note declared test stack and quality bar.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
+  declared test stack and quality bar.
 - **Available integrations** — list which MCPs / CLIs are present
   (GitHub Actions, Playwright, Snyk, Sentry, accessibility tooling). Use
   them when available; skip silently when not.
 
 ### Mode detection (solo-vibe-coder vs team)
 
-Same rules as build (`.vibeslop/config.yml` → `CODEOWNERS` → committer
-diversity → solo default). State the detected mode at top of Round 1.
+Same rules as build (`CODEOWNERS` → committer diversity → solo default).
+State the detected mode at top of Round 1.
 
 In solo mode, the offers in each round can include *"want me to write
 this test now?"* — the skill writes test code and runs the suite. In

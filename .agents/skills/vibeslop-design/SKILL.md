@@ -31,9 +31,8 @@ Front-load context:
 - **Existing surfaces** — find the component library / Storybook / design
   system / related screens already in the repo. Reuse what's there before
   proposing new shapes.
-- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
-  `.vibeslop/config.yml`. Note declared design system and accessibility
-  constraints.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
+  declared design system and accessibility constraints.
 - **Available integrations** — list which MCPs / CLIs are present (Figma,
   Storybook, accessibility tooling, GitHub for design PRs). Use them when
   available; skip silently when not.

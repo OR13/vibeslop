@@ -30,8 +30,8 @@ Front-load context:
   cycles. Reading the evolution is part of what this phase does.
 - **Repo + deploy state** — recent commits, deploys since launch, any
   rollbacks or hotfixes. Hotfixes are evidence about what broke.
-- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
-  `.vibeslop/config.yml`. Note declared analytics / observability stack.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
+  declared analytics / observability stack.
 - **Available integrations** — list which MCPs / CLIs are present
   (analytics: Clarity / GA / Mixpanel / Amplitude; reliability: Sentry;
   CRM: HubSpot for churn signals; marketing: channel performance).
@@ -40,8 +40,8 @@ Front-load context:
 
 ### Mode detection (solo-vibe-coder vs team)
 
-Same rules as build (`.vibeslop/config.yml` → `CODEOWNERS` → committer
-diversity → solo default). State the detected mode at top of Round 1.
+Same rules as build (`CODEOWNERS` → committer diversity → solo default).
+State the detected mode at top of Round 1.
 
 In solo mode, the offers can include actual data work: *"want me to
 pull the retention curve / churn cohort / session replays / funnel

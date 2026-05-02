@@ -31,9 +31,8 @@ Front-load context:
   how prior runs evolved.
 - **Repo + deploy state** — current branch, uncommitted changes, last
   release tag, CI status, any open PRs that touch this feature.
-- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
-  `.vibeslop/config.yml`. Note declared deploy stack and rollout
-  conventions.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
+  declared deploy stack and rollout conventions.
 - **Available integrations** — list which MCPs / CLIs are present
   (GitHub for PRs and tags, Vercel / Netlify / Fly for deploy, Sentry
   for production health, feature-flag tools, marketing tools). Use them
@@ -41,8 +40,8 @@ Front-load context:
 
 ### Mode detection (solo-vibe-coder vs team)
 
-Same rules as build (`.vibeslop/config.yml` → `CODEOWNERS` → committer
-diversity → solo default). State the detected mode at top of Round 1.
+Same rules as build (`CODEOWNERS` → committer diversity → solo default).
+State the detected mode at top of Round 1.
 
 In solo mode, Launch can do the actual deploy work — *"want me to
 commit and push?"*, *"want me to enable the feature flag?"*, *"want me

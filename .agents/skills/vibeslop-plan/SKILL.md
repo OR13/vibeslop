@@ -25,8 +25,8 @@ prompt. Pull what's cheaply available:
   if it exists. Use `git log -- .vibeslop/{owner}/{feature}/` to see how
   prior runs evolved.
 - **Git** — last ~20 commits on this branch and on main; current diff if any.
-- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
-  `.vibeslop/config.yml`. Note declared trackers / observability / stack.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
+  declared trackers / observability / stack.
 - **Available integrations** — list which MCPs / CLIs are present
   (Atlassian, Linear, GitHub, Slack, Sentry, etc.). Pull issue context for
   the feature name when a tracker is available. Skip silently when not.

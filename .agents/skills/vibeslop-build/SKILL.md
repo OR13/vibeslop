@@ -33,8 +33,8 @@ Front-load context:
   `package.json`, `pyproject.toml`, etc.).
 - **Existing related code** — find what's already there before proposing
   new files. Reuse the design system, helpers, types, fixtures.
-- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
-  `.vibeslop/config.yml`. Note declared trackers / observability / stack.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
+  declared trackers / observability / stack.
 - **Available integrations** — list which MCPs / CLIs are present
   (GitHub, Sentry, Vercel, Supabase, Snyk, Atlassian, Linear). Use them
   when available; skip silently when not.
@@ -43,11 +43,10 @@ Front-load context:
 
 Decide the execution mode before Round 2. Signals (in priority order):
 
-1. `.vibeslop/config.yml` has `mode: team` or `mode: solo` → respect it.
-2. `CODEOWNERS` file with >1 owner → team.
-3. `git log --pretty='%ae'` of the last ~30 commits shows ≥3 distinct
+1. `CODEOWNERS` file with >1 owner → team.
+2. `git log --pretty='%ae'` of the last ~30 commits shows ≥3 distinct
    authors → team.
-4. Otherwise → **solo** (default).
+3. Otherwise → **solo** (default).
 
 Solo mode means the agent fills the missing engineering roles: it
 *actually writes code, runs tests, and pushes commits with approval*.

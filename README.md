@@ -105,7 +105,7 @@ The skills share six assumptions. Knowing them upfront tells you what to expect 
 
 4. **Self-criticism inline.** Proposals name their own weak spots: *"I drafted X, but I'm guessing about Y — want to push on it?"* You react to specific soft spots, not generic open questions.
 
-5. **Solo and team both work.** Each skill detects mode (`.vibeslop/config.yml`, `CODEOWNERS`, committer diversity in `git log`) and adapts. In solo mode, the agent fills the missing engineering roles — actually writes code, runs commands, builds the critical path. In team mode, the agent produces planning artifacts the team executes.
+5. **Solo and team both work.** Each skill detects mode (`CODEOWNERS`, committer diversity in `git log`) and adapts. In solo mode, the agent fills the missing engineering roles — actually writes code, runs commands, builds the critical path. In team mode, the agent produces planning artifacts the team executes.
 
 6. **Iteration compounds, then gets committed.** Re-running a phase updates the artifact in place; git tracks the evolution. Your second run is smarter than your first because the prior commit is one `git log` away. Uncommitted changes get overwritten on the next run — each skill nudges you once, no nagging.
 
