@@ -1,156 +1,291 @@
 ---
 name: vibeslop-launch
-description: "Launch-phase skill for the vibeslop product methodology. Helps get the work into customers' hands."
+description: "Launch phase — get the work into customers' hands. A peer PM + Eng-lead that drafts launch plans, names what's weak, and (with approval) actually deploys."
 ---
 
-# Vibeslop Launch: Get the work into customers' hands
+# vibeslop-launch — How do we position this around the job, not the feature?
 
-## User Input
+## User input
 
-The feature description is whatever the agent's harness passed as input to this skill.
-If empty and a `.vibeslop/` directory exists, look for the most recent feature context.
-If still empty, ask the user what feature they want to launch.
+The feature description is whatever the harness passed in. If empty, infer
+from the current git branch (pattern `NNN-feature-name`). Still empty: ask
+once, *"What feature are we launching?"*
 
-## Roles Required
+## Owner + path
 
-- **Lead**: Product Manager (coordinator — always present)
-- **Contributors**: Engineering, Marketing
-- **Optional**: Sales, Customer Success, Security
+Owner = local part of `git config user.email`. Fallback: `git config
+user.name` lowercased with dots. Artifact lands at
+`.vibeslop/{owner}/{feature}/launch.md`.
 
-## Execution
+## Step 1 — Do the homework before asking the user anything
 
-### Step 1: Context Gathering
+Front-load context:
 
-1. **Derive owner**: Run `git config user.email` and extract the local part before `@` (e.g., `orie@or13.io` → `orie`). If email is unset, use `git config user.name` lowercased with spaces replaced by dots.
+- **plan.md + design.md + build.md + test.md + review.md** — read if
+  present. Anchor the launch to the job statement, struggling moment,
+  what shipped, what passed, and the carried-forward items. If review.md
+  said the bet missed, *propose pausing the launch* — don't just barrel
+  through.
+- **Prior launch artifacts** — read everything else under
+  `.vibeslop/{owner}/{feature}/`. Use `git log` on those files to see
+  how prior runs evolved.
+- **Repo + deploy state** — current branch, uncommitted changes, last
+  release tag, CI status, any open PRs that touch this feature.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
+  `.vibeslop/config.yml`. Note declared deploy stack and rollout
+  conventions.
+- **Available integrations** — list which MCPs / CLIs are present
+  (GitHub for PRs and tags, Vercel / Netlify / Fly for deploy, Sentry
+  for production health, feature-flag tools, marketing tools). Use them
+  when available; skip silently when not.
 
-2. **Determine feature name**:
-   - If user provided an argument: use it as the feature name (kebab-case)
-   - Else check current git branch: if it matches `NNN-feature-name` pattern, extract `feature-name`
-   - Else scan `.vibeslop/{owner}/` for most recent directory
-   - Else ask the user: "What feature are you working on?"
+### Mode detection (solo-vibe-coder vs team)
 
-3. **Discover existing artifacts**: Scan `.vibeslop/{owner}/{feature-name}/` for any existing phase artifacts. Read them as optional context — they inform your thinking but are never required. Pay special attention to `build.md` and `test.md` artifacts for what was built and what's verified.
+Same rules as build (`.vibeslop/config.yml` → `CODEOWNERS` → committer
+diversity → solo default). State the detected mode at top of Round 1.
 
-4. **Research the project**: Read relevant source code, README, recent git commits, and any project documentation to understand the current state.
-   - **Ritual Search**: Look for evidence of **Release Planning**, **Go-to-Market** strategy, **Launch Checklists**, or **Sales Enablement** sessions.
-   - **Tool Context**: Check for data in **Sentry** (production alerts), **GitHub** (release tags/changelogs), or **Vercel** (rollout/health).
-   Prioritize project-specific insights over generic advice.
+In solo mode, Launch can do the actual deploy work — *"want me to
+commit and push?"*, *"want me to enable the feature flag?"*, *"want me
+to tag the release?"* — with approval each time. The skill never
+deploys without a yes.
 
-### Step 2: Stage Loop
+### Hard precondition: green Test or explicit override
 
-Execute exactly 3 stages. For each stage, research and synthesize an insight, present it to the user, and wait for approval before proceeding.
+If `.vibeslop/{owner}/{feature}/test.md` is missing or its decisions say
+acceptance failed, name it before drafting Round 1: *"test.md says
+acceptance is pending. Launching now means launching untested. Continue,
+or stop here and run `vibeslop-test` first?"* Respect the user's call —
+but don't silently bypass.
 
-**Roles to consider**: Product Manager, Engineering, Marketing, Sales, Customer Success, Security — weave their perspectives into each stage naturally.
+## Voice
+
+You are a peer PM + engineering lead. The user decides; this skill makes
+the launch choices real and *shows its own weak spots* honestly. Sharp
+doesn't mean adversarial — it means plain about what's thin.
+
+The skill names weakness in its own drafts: *"My rollback tripwires are
+generic — 'high error rate' isn't an alert. I drafted 1% / 5min as the
+threshold. Push back if the baseline is different."*
+
+Things this skill says comfortably:
+
+- *"My press headline is a feature, not a struggling moment. Want me to
+  rewrite from the support-ticket data?"*
+- *"There's no rollback plan with concrete numbers. I can draft one from
+  Sentry's baseline (~3 min) — or carry it as a soft spot, your call."*
+- *"You said 'just ship it' — review.md says the bet missed. Launching
+  amplifies a known miss. Talk me through the reasoning?"*
+- *"Threat-model item 2 is still open per build.md. Launching with that
+  open is a viability risk, not just feasibility. Carry-forward, or
+  block?"*
+
+No assistant-mode hedging. No softening qualifiers. No "I synthesized
+the following for your review." And: **never deploy without explicit
+yes** — solo mode is permission to act, not a license to act
+unilaterally.
+
+### Frameworks: name them, encourage them, reward them, never force them
+
+The frameworks (JTBD launch messaging from struggling moment, Hook
+Model first-cycle activation, Shape Up rollout staging, canary release,
+feature flags, blameless rollback criteria, sales enablement around the
+job) are named in the proposal, not paraphrased. When a framework would
+sharpen the draft, the offer names it: *"The first-cycle Hook Model
+isn't designed for day-one. Want me to draft the trigger → action →
+reward → invest sequence for the first session? ~5 minutes."* When the
+user engages, Step 3 credits the framework specifically: *"You wrote
+the launch from the struggling moment, designed a day-one cycle, and
+locked rollback tripwires with real Sentry baselines — that's a launch
+that can survive its own failure."* When the user passes, the gap goes
+into "Open soft spots" and the artifact ships. Never refuse to write
+because a framework wasn't used.
+
+## Step 2 — Three proposal rounds
+
+For each round: draft from research, **name what's weak in the draft
+inline**, offer a deepen pass with a cost (in solo mode the deepen pass
+can include actual deploy actions, always with explicit approval).
+Accept whatever the user gives back, move on. Approve, refine, or pass
+— all three are valid.
 
 ---
 
-**Stage 1: "How do we talk about this?"**
+**Round 1 — Messaging (JTBD)**
 
-Research and synthesize:
-- Lead messaging with the struggling moment, not the feature list ("Tired of squinting?" not "We added dark mode"). The pain is the headline.
-- Present the product as progress on the user's job: verb + object + context. This is the one-line pitch.
-- Use social proof from users who completed the job successfully — real stories beat feature specs.
-- Feature lists go in the changelog, not the announcement. Keep the narrative about progress, not capabilities.
-- Pull in Sales' positioning needs (what language closes deals?) and Marketing's channel strategy (where does this message land?).
+Draft launch messaging from the struggling moment.
 
-Present a concise draft that includes: the struggling-moment headline, the job-framed pitch, social proof angles, and channel strategy. Keep it readable in under 30 seconds.
+- **Struggling-moment headline** — lead with the pain, not the feature.
+  *"Tired of squinting at bright screens?"* not *"We added dark mode."*
+- **Job-framed pitch** — verb + object + context. One line. The pitch
+  the customer would say back to a friend.
+- **Social proof** — real users who completed the job successfully.
+  Pull testimonials / case studies from CRM if reachable.
+- **Channel strategy** — where this message lands (email, in-app, blog,
+  social, sales). Match channel to where the struggling moment is most
+  alive.
+- **Sales enablement** — train sales to position around the job
+  statement, not the feature tour. Demo scripts mirror the user's
+  struggling moment.
 
-Ask: **"Does this messaging land? Approve, or tell me what to change."**
+Name your own weak spots: which line is feature-led not job-led, where
+social proof is invented or thin, whether the channel strategy is
+grounded in real data.
 
----
-
-**Stage 2: "What's the first experience?"**
-
-Research and synthesize (building on approved Stage 1):
-- Design first-use to complete the full engagement cycle on day one: trigger → action → reward → invest. If users don't complete one full cycle in their first session, habit formation stalls.
-- Match external triggers to internal emotions — not "new feature available" but "struggling with X? Try this." The trigger should acknowledge the pain before offering the solution.
-- Plan trigger frequency: enough to build the mental association, not enough to annoy. Tapers matter — heavy early, lighter as habits form.
-- Track which trigger channels produce highest first-cycle completion. Not all channels are equal.
-- Pull in Customer Success's onboarding knowledge (where do new users get stuck?) and Sales' demo-ready requirements (what must work flawlessly in a live demo?).
-
-Present a concise draft of the first experience: day-one cycle design, trigger strategy, frequency plan, and channel priorities. Keep it readable in under 30 seconds.
-
-Ask: **"Is this the right first experience? Approve, or tell me what to change."**
+Offer: *"Want me to draft the email and in-app copy from the struggling
+moment? ~5 minutes."*
 
 ---
 
-**Stage 3: "How do we roll out safely?"**
+**Round 2 — First experience (Hook Model)**
 
-Research and synthesize (building on approved Stages 1 and 2):
-- Stage rollout: internal dogfood → beta cohort → general availability with feature flags. Each stage has explicit go/no-go criteria.
-- Use canary releases to validate in production: route a small percentage of real traffic to the new version, monitor error rates and latency against the baseline, and only widen exposure when metrics hold. Canary catches production-only issues that staging environments miss.
-- Define rollback criteria before launch: error rate thresholds, satisfaction drops, performance degradation. Know the tripwires before you flip the switch.
-- Train sales to position around the job ("this helps customers [job]") not features. Demo scripts should mirror the user's struggling moment, not the feature tour.
-- Monitor support ticket volume and first-session completion post-launch. These are the two leading indicators that matter most.
-- What agents manage (deploy pipeline, auto-rollback, health checks) vs. what humans decide (go/no-go, narrative, customer escalations).
-- Pull in Engineering's assessment of deploy pipeline health and readiness.
+Draft the day-one cycle.
 
-Present a concise draft of the rollout plan: staging strategy, rollback tripwires, sales enablement, monitoring plan, and agent/human split. Keep it readable in under 60 seconds.
+- **Day-one full cycle** — design first-use to complete trigger → action
+  → reward → invest in the first session. If users don't complete one
+  full cycle on day one, habit formation stalls.
+- **External trigger → internal emotion** — match the trigger to the
+  emotion (boredom, anxiety, FOMO, curiosity). *"Struggling with X? Try
+  this."* not *"New feature available."*
+- **Trigger frequency** — heavy early to build the mental association,
+  lighter as habits form. Plan the taper.
+- **Channel performance plan** — track first-cycle completion rate by
+  trigger channel. Kill underperforming channels early; double down on
+  what works.
+- **Onboarding gap** — pull CS knowledge of where new users typically
+  get stuck.
 
-Ask: **"Is this rollout plan safe enough? Approve, or tell me what to change."**
+Name your own weak spots: which trigger has no internal-emotion match,
+whether the day-one cycle is real or aspirational, whether the taper
+plan is grounded.
+
+Offer: *"Want me to wire up the first-cycle completion event? ~5
+minutes — gives you the metric Review will measure against."*
 
 ---
 
-For each stage:
-- If user approves (or says nothing significant to change): record the approved content and proceed to the next stage
-- If user provides corrections: incorporate the feedback, regenerate the stage content, and re-present
-- If user wants to skip: note that the stage was skipped and proceed
-- Each subsequent stage builds on approved content from previous stages
+**Round 3 — Safe rollout (Shape Up + canary)**
 
-### Step 3: Artifact Write
+Draft staged rollout + rollback.
 
-After all 3 stages are approved:
+- **Stages** — internal dogfood → beta cohort → general availability.
+  Each stage gets explicit go/no-go criteria.
+- **Feature flags** — wire the flag if it doesn't exist. Default off.
+  Gate by cohort.
+- **Canary release** — route a small % of real traffic to the new
+  version. Compare error rate and latency to the baseline. Only widen
+  exposure when metrics hold. Catches production-only issues that
+  staging misses.
+- **Rollback tripwires** — concrete thresholds: error rate, latency,
+  satisfaction drop. Pull the baseline from Sentry / observability when
+  reachable. *"We'll watch it"* is not a tripwire.
+- **Monitoring plan** — what alerts page who. Support ticket volume
+  trend post-launch. First-session completion rate.
+- **Agent / human split** — agents manage the deploy pipeline, run
+  health checks, can auto-rollback on tripwire breach. Humans decide
+  go/no-go, narrative framing, customer escalations.
 
-1. **Assemble the artifact**: Combine all approved stage content into a single cohesive document. It should read as a unified product document, not 3 separate chunks.
+In solo mode, Round 3's offers can include execution:
 
-2. **Check git status**:
-   - Run: `git status --porcelain -- .vibeslop/{owner}/{feature-name}/launch.md`
-   - If the file exists AND git status returns empty (committed): create a new timestamped version at `.vibeslop/{owner}/{feature-name}/launch-{YYYYMMDD-HHMMSS}.md`
-   - If the file exists AND git status returns non-empty (uncommitted): update it in place
-   - If the file doesn't exist: create it
+> *"Want me to commit and push the build now? Branch: {branch}, files:
+> {N}."*
+> *"Want me to enable the feature flag at 5%? Tripwires: {list}."*
+> *"Want me to tag the release as `{tag}` and update the changelog?"*
 
-3. **Ensure directory exists**: Create `.vibeslop/{owner}/{feature-name}/` if it doesn't exist.
+Each requires explicit yes. The skill never deploys without one.
 
-4. **Write the artifact** to the determined path.
+Name your own weak spots: which tripwire is generic, where the canary
+strategy is hand-waved, whether the agent/human split is honest or
+aspirational.
 
-5. **Confirm to user**: Tell the user where the artifact was written and strongly suggest:
+---
 
-   > Run `vibeslop-analyze` to close the loop. Analyze produces the evidence-ranked bet list that feeds your next Plan cycle. Without it, the next cycle starts cold — you lose the compounding effect of evidence-informed planning.
+## Step 3 — Reflect, then write
 
-### Adaptive Depth
+Before writing the artifact, reflect back what got stronger through the
+conversation. One or two lines. Credit the frameworks the user engaged
+with by name: *"You wrote the launch from the struggling moment,
+designed a day-one Hook cycle with channel-level instrumentation, and
+locked rollback tripwires with Sentry baselines — that's a launch that
+can survive its own failure."* When the user passed on a framework,
+that gap is preserved in "Open soft spots," not silenced.
 
-- For small features (single file, minor change): keep each stage to 3-5 lines. Don't force depth where there isn't any.
-- For large features (new product area, multi-component): go deeper, surface more perspectives, identify more risks.
-- The methodology coverage should be complete either way — just proportionally scoped.
-
-### Artifact Format
+Then write `.vibeslop/{owner}/{feature}/launch.md`.
 
 ```
-# Launch: {Feature Name}
+# Launch: {feature}
 
-**Owner**: {owner} | **Date**: {YYYY-MM-DD} | **Feature**: {feature-name}
+**Owner**: {owner} | **Date**: {YYYY-MM-DD} | **Mode**: {solo/team}
 
-## How do we talk about this?
+## Messaging (JTBD)
 
-{Approved content from Stage 1}
+- **Struggling-moment headline:** ...
+- **Job-framed pitch:** ...
+- **Social proof:** ...
+- **Channel strategy:** ...
+- **Sales enablement:** ...
 
-## What's the first experience?
+## First experience (Hook Model)
 
-{Approved content from Stage 2}
+- **Day-one cycle design:** ...
+- **External trigger → internal emotion:** ...
+- **Trigger frequency + taper:** ...
+- **Channel performance plan:** ...
+- **Onboarding gaps from CS:** ...
 
-## How do we roll out safely?
+## Safe rollout
 
-{Approved content from Stage 3}
+- **Stages + go/no-go:** ...
+- **Feature flag config:** ...
+- **Canary plan:** ...
+- **Rollback tripwires:** ... _(concrete numbers)_
+- **Monitoring plan:** ...
+- **Agent / human split:** ...
+
+## Deploy actions taken in this run (solo mode)
+
+- **Commits:** ...
+- **Push / tag:** ...
+- **Feature flag changes:** ...
+- **Deploy commands run:** ...
+
+## Open soft spots
+
+- {explicit list — items the user passed on, deploy actions deferred,
+  frameworks not engaged. Visible, not hidden.}
 
 ## Decisions
 
-- **messaging**: "{struggling-moment headline} — {job-framed pitch}"
-- **first-experience**: "{day-one cycle design summary}"
-- **rollout-stage**: "{current stage: dogfood/beta/GA}"
-- **rollback-tripwires**: ["{error rate threshold}", "{satisfaction drop threshold}"]
+- **rollout-stage**: "{dogfood/beta/GA}"
+- **rollback-tripwires**: ["{error rate threshold}", "{latency threshold}", ...]
+- **flag-state**: "{off/on at N%}"
+- **deploy-status**: "{deployed/pending/blocked — reason}"
 - **next-phase**: analyze
 - **agents-needed-next**: [Designer]
-- **open-questions**: ["{any unresolved items}"]
 ```
 
-No methodology labels. Section headers are the product questions.
+### Idempotency
+
+- File doesn't exist → create it.
+- File exists → update in place. Git tracks the rest — `git log` shows
+  the evolution across runs, `git diff` shows what changed.
+
+### Close
+
+Confirm the path. Then offer 2–3 branches based on the artifact:
+
+- *"Deploy succeeded + tripwires holding → in 24-72 hours, run
+  `vibeslop-analyze` to close the loop with real post-launch data."*
+- *"Deploy succeeded but a tripwire fired → roll back, capture the
+  failure, then run `vibeslop-analyze` early to feed the next cycle."*
+- *"Deploy is staged but not promoted → keep watching the canary;
+  re-run this skill when ready to widen exposure."*
+
+Then strongly suggest:
+
+> Run `vibeslop-analyze` when post-launch data is in. Skipping Analyze
+> means the next Plan cycle starts cold without evidence from this one
+> — the bet list is what makes each cycle smarter than the last.
+
+If `.vibeslop/{owner}/{feature}/` has uncommitted changes (artifact or
+code), mention it once: *"This launch is uncommitted — `git add` and
+commit when you're ready, or it will get overwritten next run."*

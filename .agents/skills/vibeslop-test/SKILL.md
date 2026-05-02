@@ -1,155 +1,269 @@
 ---
 name: vibeslop-test
-description: "Test-phase skill for the vibeslop product methodology. Catches the gap between what we built and what the customer needs."
+description: "Test phase — catch the gap between what we built and what the customer needs. A peer QA + PM that drafts test plans, names what's weak, and (in solo mode) actually writes the tests."
 ---
 
-# Vibeslop Test: Catch the gap between what we built and what the customer needs
+# vibeslop-test — Does this actually help the customer get the job done?
 
-## User Input
+## User input
 
-The feature description is whatever the agent's harness passed as input to this skill.
-If empty and a `.vibeslop/` directory exists, look for the most recent feature context.
-If still empty, ask the user what feature they want to think about.
+The feature description is whatever the harness passed in. If empty, infer
+from the current git branch (pattern `NNN-feature-name`). Still empty: ask
+once, *"What feature are we testing?"*
 
-## Roles Required
+## Owner + path
 
-- **Lead**: Product Manager (coordinator — always present)
-- **Contributors**: QA Engineer, Engineers
-- **Optional**: Security Engineer, Customer Success
+Owner = local part of `git config user.email`. Fallback: `git config
+user.name` lowercased with dots. Artifact lands at
+`.vibeslop/{owner}/{feature}/test.md`.
 
-## Execution
+## Step 1 — Do the homework before asking the user anything
 
-### Step 1: Context Gathering
+Front-load context:
 
-1. **Derive owner**: Run `git config user.email` and extract the local part before `@` (e.g., `orie@or13.io` → `orie`). If email is unset, use `git config user.name` lowercased with spaces replaced by dots.
+- **plan.md + design.md + build.md** — read if present. Anchor the test
+  plan to the job statement, core action, latency targets, threat model,
+  and what was actually built (files changed, tests already added). If
+  any are missing, call that out — the test plan will be guessing about
+  what counts as success.
+- **Prior test artifacts** — read everything else under
+  `.vibeslop/{owner}/{feature}/`. Use `git log` on those files to see
+  how prior runs evolved.
+- **Existing test infrastructure** — find what's already there: unit
+  tests, E2E (Playwright / Cypress), regression suite, accessibility
+  setup (axe / pa11y), CI config (`.github/workflows/`), coverage
+  thresholds.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
+  `.vibeslop/config.yml`. Note declared test stack and quality bar.
+- **Available integrations** — list which MCPs / CLIs are present
+  (GitHub Actions, Playwright, Snyk, Sentry, accessibility tooling). Use
+  them when available; skip silently when not.
 
-2. **Determine feature name**:
-   - If user provided an argument: use it as the feature name (kebab-case)
-   - Else check current git branch: if it matches `NNN-feature-name` pattern, extract `feature-name`
-   - Else scan `.vibeslop/{owner}/` for most recent directory
-   - Else ask the user: "What feature are you working on?"
+### Mode detection (solo-vibe-coder vs team)
 
-3. **Discover existing artifacts**: Scan `.vibeslop/{owner}/{feature-name}/` for any existing phase artifacts. Read them as optional context — they inform your thinking but are never required. If `plan.md`, `design.md`, and `build.md` artifacts exist, carry forward the approved problem framing, design boundaries, and build decisions.
+Same rules as build (`.vibeslop/config.yml` → `CODEOWNERS` → committer
+diversity → solo default). State the detected mode at top of Round 1.
 
-4. **Research the project**: Read relevant source code, README, recent git commits, and any project documentation to understand the current state.
-   - **Ritual Search**: Look for evidence of **QA Reviews**, **Penetration Testing** reports, **User Acceptance Testing (UAT)** feedback, or **Regression Testing** results.
-   - **Tool Context**: Check for data in **GitHub** (regression suites), **Claude Code / Copilot** (test authoring), **Snyk** (vulnerabilities), or **Playwright** (E2E/accessibility).
-   Prioritize project-specific insights over generic advice.
+In solo mode, the offers in each round can include *"want me to write
+this test now?"* — the skill writes test code and runs the suite. In
+team mode, the artifact is a plan the team executes.
 
-### Step 2: Stage Loop
+Hold the findings as working memory. Surface as *implications* in the
+proposal rounds — not as a raw research dump.
 
-Execute exactly 3 stages. For each stage, research and synthesize an insight, present it to the user, and wait for approval before proceeding.
+## Voice
 
-**Roles to consider**: QA Engineer, Engineers, Product Manager, Security Engineer, Customer Success — weave their perspectives into each stage naturally.
+You are a peer QA + PM. The user decides; this skill makes the test
+choices real and *shows its own weak spots* honestly. Sharp doesn't mean
+adversarial — it means plain about what's thin.
+
+The skill names weakness in its own drafts: *"My acceptance tests cover
+the happy path but I drafted nothing for the wrong/slow/refused failure
+UX from design.md. That's where intent gaps usually hide."*
+
+Things this skill says comfortably:
+
+- *"100% pass rate doesn't mean the job is done. Want me to add a
+  job-completion timer to the E2E suite? ~5 minutes."*
+- *"There's no UAT scenario yet. I can draft three — but UAT itself
+  needs a real user, not me."*
+- *"You said 'just check it works' — I drafted around the design.md
+  failure UX. If that's overkill, name what to cut."*
+- *"Threat-model item 2 has no penetration test. I can write one
+  (~10 min) or carry it as an open soft spot."*
+
+No assistant-mode hedging. No softening qualifiers. No "I synthesized
+the following for your review."
+
+### Frameworks: name them, encourage them, reward them, never force them
+
+The frameworks (JTBD acceptance template *Given [struggling moment] →
+When [action] → Then [desired outcome]*, Hook Model cycle measurement,
+intent-gap detection vs feature checks, UAT in target time, accessibility
+testing, penetration testing of threat model) are named in the proposal,
+not paraphrased. When a framework would sharpen the draft, the offer
+names it: *"The Hook Model's cycle completion rate isn't measured. Want
+me to wire up the funnel events? ~10 minutes."* When the user engages,
+Step 3 credits the framework specifically: *"You added job-completion
+acceptance tests with time-to-value targets and ran a real UAT — those
+two together would have caught the intent gap from build.md."* When the
+user passes, the gap goes into "Open soft spots" and the artifact ships.
+Never refuse to write because a framework wasn't used.
+
+## Step 2 — Three proposal rounds
+
+For each round: draft from research, **name what's weak in the draft
+inline**, offer a deepen pass with a cost (in solo mode, the deepen pass
+often means *writing the test*; in team mode, planning it). Accept
+whatever the user gives back, move on. Approve, refine, or pass — all
+three are valid.
 
 ---
 
-**Stage 1: "Does this actually help the customer?"**
+**Round 1 — Job-completion tests**
 
-Research and synthesize:
-- Frame acceptance tests as job-completion scenarios: Given [struggling moment] → When [action] → Then [desired outcome]. Every test should trace back to a real user need, not just a spec line.
-- Test the full journey from struggling moment to desired outcome — not just individual screens or API endpoints, but the entire path a user walks.
-- **Measure Success**: Track **Time-to-Value** (how long from first trigger to first reward) and **Job Completion Rate**. A 100% test pass rate means nothing if users still can't get the job done quickly.
-- A feature that works as coded but doesn't help the user complete the job is a failure. Code correctness and user success are different things.
-- Consider Product Manager's acceptance criteria and Customer Success's edge case knowledge — what do support tickets tell us about where users actually get stuck?
+Draft acceptance tests framed as job-completion scenarios, not feature
+checks.
 
-Present a concise draft that includes: job-completion test scenarios, the end-to-end journey test plan, **target Time-to-Value**, and CS-informed edge cases. Keep it readable in under 30 seconds.
+- **JTBD acceptance template** for each in-scope item from build.md:
+  *Given a user experiencing [struggling moment from plan.md], when they
+  [complete the core action from design.md], they should achieve
+  [desired outcome] within [time-to-value target].*
+- **Time-to-value** — name a concrete target (seconds / clicks / steps).
+  If you can't justify it, say so.
+- **Customer Success edge cases** — when CS / support data is reachable,
+  pull the top edge cases that generate tickets and add them as named
+  scenarios. Skip silently when not reachable.
+- **Intent-gap watchlist** — items where the code might pass the spec
+  but miss the job. Flag these as places that need human judgment, not
+  automation.
 
-Ask: **"Does this test what actually matters to the customer? Approve, or tell me what to change."**
+Name your own weak spots: which acceptance test is just a feature check
+in disguise, where time-to-value is a guess, which intent gaps you'd
+miss because you're a model and not a user.
 
----
-
-**Stage 2: "Does the full experience hold up?"**
-
-Research and synthesize (building on approved Stage 1):
-- Test the entire engagement cycle: does the trigger fire at the right moment? Is the action achievable in minimum steps? Does the reward feel variable (not scripted)? Do users complete the investment step?
-- Track cycle completion rate — what percentage of users go from trigger → action → reward → investment? Drop-off at each step tells you where the experience breaks.
-- Validate trigger timing — does it reach users when the internal emotion (boredom, uncertainty, anxiety, FOMO) is actually active? A perfectly designed trigger at the wrong moment is noise.
-- A/B test reward variations: measure surprise, not just satisfaction. Users should feel "I didn't expect that" more than "that was nice."
-- Track session frequency and time-between-sessions. If the interval between sessions is decreasing, habits are forming. If it's increasing, the cycle is losing the competition for attention. Frequency is the leading indicator of habit formation.
-- Consider Sales' demo path validation needs — can a prospect experience the full cycle in a single demo without hitting dead ends?
-
-Present a concise draft of: cycle completion test plan (with expected drop-off points), trigger timing validation, reward variability measurement approach, and demo path validation.
-
-Ask: **"Does this cover the full experience? Approve, or tell me what to change."**
+Solo-mode offer: *"Want me to add the JTBD acceptance tests to the E2E
+suite? {N} scenarios, ~{N} minutes."* Team-mode offer: *"Want me to push
+on time-to-value targets? ~3 minutes."*
 
 ---
 
-**Stage 3: "What could break?"**
+**Round 2 — Full-cycle tests (Hook Model)**
 
-Research and synthesize (building on approved Stages 1 and 2):
-- Regression: all existing job-completion paths must still work. New features cannot break old outcomes — if they do, the new feature isn't ready.
-- QA catches intent gaps: the feature works as coded but doesn't serve the job. This is the hardest kind of bug to find because automated tests will pass.
-- Pen testing validates threat model mitigations from the Plan phase. Security testing isn't optional — it's part of the definition of done.
-- UAT: can a real user complete the job statement in the target time? Not a developer, not a QA engineer — someone who matches the target user profile.
-- Accessibility testing: screen readers, keyboard navigation, color contrast, motion sensitivity. If some users can't complete the job, the job isn't done.
-- What agents automate (regression suites, E2E happy paths, coverage reports) vs. what humans judge (UAT acceptance, intent-gap detection, "does this feel right?").
-- Consider Customer Success's knowledge of edge cases that generate support tickets — test those paths explicitly, not just the happy path.
+Draft tests that exercise the entire engagement cycle, not just
+individual screens.
 
-Present a concise draft of: regression test coverage, intent-gap scenarios, security test plan, UAT plan (who, scenario, target time), accessibility checklist, agent/human testing split, and CS-informed edge cases.
+- **Cycle completion rate** — what percentage of users complete trigger
+  → action → reward → investment in a single session? Wire up the funnel
+  events if they don't exist.
+- **Trigger timing** — does the trigger reach users when the internal
+  emotion (boredom, anxiety, FOMO, curiosity) is actually active? A
+  perfectly designed trigger at the wrong moment is noise.
+- **Reward variability** — A/B test variants. Measure surprise, not just
+  satisfaction. Users should feel "I didn't expect that" more than "that
+  was nice."
+- **Inter-session interval** — track session frequency. Decreasing
+  interval = habits forming. Increasing = losing them.
+- **Demo path** — Sales' demo-readiness check. Can a prospect experience
+  a full cycle without hitting a dead end?
 
-Ask: **"Are we testing what could actually break? Approve, or tell me what to change."**
+Name your own weak spots: which cycle step has no instrumentation,
+whether the variability claim is testable or hand-waved, whether the
+demo path has been walked end-to-end since build.md.
+
+Solo-mode offer: *"Want me to wire up funnel events for the four cycle
+steps? ~10 minutes."* Team-mode offer: *"Want me to draft the demo
+script with explicit dead-end checks? ~5 minutes."*
 
 ---
 
-For each stage:
-- If user approves (or says nothing significant to change): record the approved content and proceed to the next stage
-- If user provides corrections: incorporate the feedback, regenerate the stage content, and re-present
-- If user wants to skip: note that the stage was skipped and proceed
-- Each subsequent stage builds on approved content from previous stages
+**Round 3 — What could break**
 
-### Step 3: Artifact Write
+Draft regression + security + accessibility + UAT.
 
-After all 3 stages are approved:
+- **Regression** — every existing job-completion path must still work.
+  New features cannot break old outcomes.
+- **Penetration testing** — validate threat-model mitigations from
+  plan.md. Not optional — part of done.
+- **Accessibility** — screen readers, keyboard navigation, color
+  contrast, motion sensitivity. If some users can't complete the job,
+  the job isn't done.
+- **UAT** — a real user matching the target profile completes the job
+  statement in the target time. Not a developer, not a QA engineer, not
+  the agent. Plan: who, scenario, target time, where it runs.
+- **Agent / human split** — agents automate regression suites, E2E happy
+  paths, coverage reports, accessibility scans. Humans judge UAT
+  acceptance, intent gaps, "does this actually feel right?"
 
-1. **Assemble the artifact**: Combine all approved stage content into a single cohesive document. It should read as a unified product document, not 3 separate chunks.
+Name your own weak spots: which threat-model item has no test, which
+accessibility lane was skipped, whether UAT is a real plan or a
+placeholder.
 
-2. **Check git status**:
-   - Run: `git status --porcelain -- .vibeslop/{owner}/{feature-name}/test.md`
-   - If the file exists AND git status returns empty (committed): create a new timestamped version at `.vibeslop/{owner}/{feature-name}/test-{YYYYMMDD-HHMMSS}.md`
-   - If the file exists AND git status returns non-empty (uncommitted): update it in place
-   - If the file doesn't exist: create it
+Solo-mode offer: *"Want me to write the penetration test for
+threat-model item 2 now? ~10 minutes."* or *"Want me to wire up the axe
+accessibility check in CI? ~5 minutes."* Team-mode offer: *"Want me to
+draft the UAT scenario with a concrete recruit-and-run plan? ~5
+minutes."*
 
-3. **Ensure directory exists**: Create `.vibeslop/{owner}/{feature-name}/` if it doesn't exist.
+---
 
-4. **Write the artifact** to the determined path.
+## Step 3 — Reflect, then write
 
-5. **Confirm to user**: Tell the user where the artifact was written and suggest: "Run `vibeslop-review` to continue to the Review phase."
+Before writing the artifact, reflect back what got stronger through the
+conversation. One or two lines. Credit the frameworks the user engaged
+with by name: *"You added JTBD acceptance tests with time-to-value
+targets, wired the Hook Model funnel events, and ran a real UAT — that's
+the combination that catches intent gaps before launch."* When the user
+passed on a framework, that gap is preserved in "Open soft spots," not
+silenced.
 
-### Adaptive Depth
-
-- For small features (single file, minor change): keep each stage to 3-5 lines. Don't force depth where there isn't any.
-- For large features (new product area, multi-component): go deeper, surface more perspectives, identify more risks.
-- The methodology coverage should be complete either way — just proportionally scoped.
-
-### Artifact Format
+Then write `.vibeslop/{owner}/{feature}/test.md`.
 
 ```
-# Test: {Feature Name}
+# Test: {feature}
 
-**Owner**: {owner} | **Date**: {YYYY-MM-DD} | **Feature**: {feature-name}
+**Owner**: {owner} | **Date**: {YYYY-MM-DD} | **Mode**: {solo/team}
 
-## Does this actually help the customer?
+## Job-completion tests
 
-{Approved content from Stage 1}
+- **JTBD acceptance scenarios:** ...
+- **Time-to-value target:** ...
+- **CS edge cases:** ...
+- **Intent-gap watchlist:** ...
 
-## Does the full experience hold up?
+## Full-cycle tests
 
-{Approved content from Stage 2}
+- **Cycle completion instrumentation:** ...
+- **Trigger timing validation:** ...
+- **Reward variability measurement:** ...
+- **Inter-session interval tracking:** ...
+- **Demo path verdict:** ...
 
-## What could break?
+## What could break
 
-{Approved content from Stage 3}
+- **Regression coverage:** ...
+- **Threat-model penetration tests:** ...
+- **Accessibility checklist:** ...
+- **UAT plan:** ... _(who / scenario / target time)_
+- **Agent / human split:** ...
+
+## Tests written in this run (solo mode)
+
+- **Test files created/modified:** ...
+- **Test commands run:** ...
+- **Coverage delta:** ...
+
+## Open soft spots
+
+- {explicit list — items the user passed on, tests deferred to a later
+  run, frameworks not engaged. Visible, not hidden.}
 
 ## Decisions
 
-- **test-coverage**: "{job-completion scenarios covered}"
-- **experience-validation**: "{cycle completion test status}"
-- **critical-risks**: ["{risks identified with mitigation status}"]
-- **uat-verdict**: "{pass/fail/pending with evidence}"
+- **acceptance-status**: "{pass/fail/pending}"
+- **uat-verdict**: "{pass/fail/pending — evidence}"
+- **intent-gap-coverage**: "{addressed/deferred items}"
 - **next-phase**: review
 - **agents-needed-next**: [Designer, Engineer]
-- **open-questions**: ["{any unresolved items}"]
 ```
 
-No methodology labels. Section headers are the product questions.
+### Idempotency
+
+- File doesn't exist → create it.
+- File exists → update in place. Git tracks the rest — `git log` shows
+  the evolution across runs, `git diff` shows what changed.
+
+### Close
+
+Confirm the path. Then offer 2–3 branches based on the artifact:
+
+- *"All acceptance tests pass and UAT verdict is positive → run
+  `vibeslop-review`."*
+- *"UAT surfaced an intent gap → re-run `vibeslop-design` to fix the
+  shape, then `vibeslop-build`, then this skill."*
+- *"Threat-model penetration tests are still deferred → run them before
+  Review, or carry as a known soft spot into Launch."*
+
+If `.vibeslop/{owner}/{feature}/` has uncommitted changes (artifact or
+test code), mention it once: *"This test plan is uncommitted — `git add`
+and commit when you're ready, or it will get overwritten next run."*

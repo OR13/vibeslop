@@ -63,49 +63,55 @@ Vibeslop ships skills in the open [agentskills.io](https://agentskills.io) forma
 
 The installer writes to `.agents/skills/` by default, so any harness following the standard sees the same seven skills. Earlier versions of vibeslop installed Claude-Code-only files into `.claude/commands/`; re-run the installer to migrate.
 
-## 🔍 Four Lenses
-
-Every phase applies the same four methodology lenses — the agent does the work, then presents condensed findings for your review.
-
-```mermaid
-graph TD
-    F["Feature Idea"] --> L1["🎯 Jobs to Be Done"]
-    F --> L2["🔁 Hook Model"]
-    F --> L3["📐 Agile Delivery"]
-    F --> L4["🤖 Agentic SDLC"]
-    L1 --> A["Artifact → plan.md"]
-    L2 --> A
-    L3 --> A
-    L4 --> A
-
-    style F fill:#1e293b,stroke:#475569,color:#fff
-    style A fill:#10b981,stroke:#059669,color:#fff
-```
-
-🎯 **[Jobs to Be Done](https://or13.io/vibeslop#jtbd)** — Frame work around customer struggling moments, not feature lists. Score outcomes by importance × satisfaction gap.
-
-🔁 **[Hook Model](https://or13.io/vibeslop#hook-model)** — Design habit loops: trigger → action → variable reward → investment. If there's no natural hook, the skill says so.
-
-📐 **[Agile Delivery](https://or13.io/vibeslop#agile)** — Fixed time, variable scope. Every bet has an appetite and explicit cuts. No unbounded backlogs.
-
-🤖 **[Agentic SDLC](https://or13.io/vibeslop#agentic)** — When no human fills a team role, agents fill it — faster. Define tool categories and human vs. agent responsibilities.
-
 ## ✨ How It Feels
 
-You invoke a skill. The agent researches your codebase, drafts all four lenses, and presents **condensed findings** — not a wall of text:
+You invoke a skill. The agent researches your codebase, drafts a proposal for the first round, and **names what's weak about its own draft**:
 
 ```
-🎯 Plan complete for: Add user onboarding flow
+🎯 Plan — Round 1: The bet (mode: solo)
 
-⚡ Agents filling reviewer + tester roles — no human bottleneck
-💎 Opportunity gap of 8 — users desperately want this but nothing exists
-⚠️ Auth integration is a security-sensitive path — needs threat modeling
-🔮 2-day appetite is tight if we include email verification
+📰 Press release: "Squinting at bright screens at night? Switch to dark
+   mode in one tap from any screen."
 
-Say "ok" to proceed or ask about any item.
+❓ Customer FAQ (3 of 5):
+   Q: Will it remember my preference? A: Yes, per-device.
+   Q: Does it work on the marketing site? A: No — that's deferred.
+   Q: What about images and videos? A: Auto-dimmed; flag if wrong.
+
+💸 Cost of inaction: support tickets show ~12/week mention eye strain.
+   Six months → ~300 tickets, plus the SEO hit from competitors shipping
+   first.
+
+⚠️ My own soft spots:
+   - The 12/week number is a sample, not the full ticket data — pull
+     from HubSpot? (~3 min)
+   - "Auto-dimmed images" is a guess at scope. Cagan's feasibility risk
+     is where I'm thinnest.
+
+Want to push on any of those, approve as-is, or pass?
 ```
 
-The full artifact is written to `plan.md` only after you approve. Each phase builds on the last. 🌐 **[See the interactive methodology →](https://or13.io/vibeslop)**
+You approve, refine, or pass. Soft spots you pass on land in the artifact under "Open soft spots" — visible to the next phase, not silenced. The artifact is written when all rounds are done. 🌐 **[See the interactive methodology →](https://or13.io/vibeslop)**
+
+## 📐 Principles
+
+The skills share six assumptions. Knowing them upfront tells you what to expect — and what *not* to expect.
+
+1. **Gradient, not gate.** The skill produces an artifact at whatever level of engagement you bring. Engagement makes it sharper; the skill never refuses to write because the thinking is thin. Unresolved items ship in the artifact under "Open soft spots" — visible, not hidden.
+
+2. **Frameworks named, not paraphrased.** When a framework would sharpen the current draft — Cagan's four risks, B=MAT, the Hook Model, Shape Up appetites, Secure Coding from the threat model, and others (the library grows) — the skill calls it out by name. Engaging with a framework is rewarded inline; passing on one is recorded as a soft spot. Never forced.
+
+3. **Skill does its homework first.** Each skill front-loads research — prior artifacts, git state, related code, available MCPs / CLIs — before asking you anything. You land on a grounded proposal, not an empty prompt.
+
+4. **Self-criticism inline.** Proposals name their own weak spots: *"I drafted X, but I'm guessing about Y — want to push on it?"* You react to specific soft spots, not generic open questions.
+
+5. **Solo and team both work.** Each skill detects mode (`.vibeslop/config.yml`, `CODEOWNERS`, committer diversity in `git log`) and adapts. In solo mode, the agent fills the missing engineering roles — actually writes code, runs commands, builds the critical path. In team mode, the agent produces planning artifacts the team executes.
+
+6. **Iteration compounds, then gets committed.** Re-running a phase updates the artifact in place; git tracks the evolution. Your second run is smarter than your first because the prior commit is one `git log` away. Uncommitted changes get overwritten on the next run — each skill nudges you once, no nagging.
+
+## 📚 The toolbox
+
+The skills aren't a methodology with a fixed framework count. They're a peer thinking partner that draws on a growing library — Working Backwards, Cagan's four risks, JTBD, B=MAT, Fogg's six simplicity factors, the Hook Model, Shape Up appetites, Secure Coding, and more — and reaches for whichever sharpens the current draft. The toolbox grows over time. PRs adding frameworks (with citations) welcome.
 
 ## 🚀 Self-Deploying
 

@@ -1,164 +1,281 @@
 ---
 name: vibeslop-build
-description: "Build-phase skill for the vibeslop product methodology. Helps the team solve the problem their way."
+description: "Build phase — let the team (or the solo founder + agent) solve the problem their way. A peer engineering lead that drafts and names what's weak about its own draft. Builds code in solo mode."
 ---
 
-# Vibeslop Build: Let the team solve the problem their way
+# vibeslop-build — Are we building toward the outcome or just shipping features?
 
-## User Input
+## User input
 
-The feature description is whatever the agent's harness passed as input to this skill.
-If empty and a `.vibeslop/` directory exists, look for the most recent feature context.
-If still empty, ask the user what feature they want to think about.
+The feature description is whatever the harness passed in. If empty, infer
+from the current git branch (pattern `NNN-feature-name`). Still empty: ask
+once, *"What feature are we building?"*
 
-## Roles Required
+## Owner + path
 
-- **Lead**: Product Manager (coordinator — always present)
-- **Contributors**: Engineers, Engineering Lead
-- **Optional**: Security Engineer
+Owner = local part of `git config user.email`. Fallback: `git config
+user.name` lowercased with dots. Artifact lands at
+`.vibeslop/{owner}/{feature}/build.md`.
 
-## Execution
+## Step 1 — Do the homework before asking the user anything
 
-### Step 1: Context Gathering
+Front-load context:
 
-1. **Derive owner**: Run `git config user.email` and extract the local part before `@` (e.g., `orie@or13.io` → `orie`). If email is unset, use `git config user.name` lowercased with spaces replaced by dots.
+- **plan.md + design.md** — read if present. Anchor the build to the bet's
+  job statement, outcome metric, core action, topology, scope cuts, and
+  threat model. If either is missing, call that out — the build will be
+  guessing about what counts as success.
+- **Prior build artifacts** — read everything else under
+  `.vibeslop/{owner}/{feature}/`. Use `git log` on those files to see
+  how prior runs evolved.
+- **Repo state** — last ~20 commits on this branch, current diff,
+  uncommitted files, CI/test/deploy config (`.github/workflows/`,
+  `package.json`, `pyproject.toml`, etc.).
+- **Existing related code** — find what's already there before proposing
+  new files. Reuse the design system, helpers, types, fixtures.
+- **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`,
+  `.vibeslop/config.yml`. Note declared trackers / observability / stack.
+- **Available integrations** — list which MCPs / CLIs are present
+  (GitHub, Sentry, Vercel, Supabase, Snyk, Atlassian, Linear). Use them
+  when available; skip silently when not.
 
-2. **Determine feature name**:
-   - If user provided an argument: use it as the feature name (kebab-case)
-   - Else check current git branch: if it matches `NNN-feature-name` pattern, extract `feature-name`
-   - Else scan `.vibeslop/{owner}/` for most recent directory
-   - Else ask the user: "What feature are you working on?"
+### Mode detection (solo-vibe-coder vs team)
 
-3. **Discover existing artifacts**: Scan `.vibeslop/{owner}/{feature-name}/` for any existing phase artifacts. Read them as optional context — they inform your thinking but are never required. If `plan.md` and `design.md` artifacts exist, carry forward the approved problem framing, engagement cycle, bet scope, and design boundaries.
+Decide the execution mode before Round 2. Signals (in priority order):
 
-4. **Research the project**: Read relevant source code, README, recent git commits, and any project documentation to understand the current state.
-   - **Ritual Search**: Look for evidence of **Daily Standups**, **Pair Programming**, **Code Review** feedback, or **Secure Coding** checklists.
-   - **Tool Context**: Check for data in **Sentry** (errors), **GitHub** (PRs/CI), **Claude Code / Copilot** (generative context), **Snyk** (vulnerabilities), **Vercel** (previews), or **Supabase** (migrations).
-   Prioritize project-specific insights over generic advice.
+1. `.vibeslop/config.yml` has `mode: team` or `mode: solo` → respect it.
+2. `CODEOWNERS` file with >1 owner → team.
+3. `git log --pretty='%ae'` of the last ~30 commits shows ≥3 distinct
+   authors → team.
+4. Otherwise → **solo** (default).
 
-### Step 2: Stage Loop
+Solo mode means the agent fills the missing engineering roles: it
+*actually writes code, runs tests, and pushes commits with approval*.
+Team mode means the agent produces a planning doc that humans execute.
 
-Execute exactly 3 stages. For each stage, research and synthesize an insight, present it to the user, and wait for approval before proceeding.
+State the detected mode at the top of Round 1 so the user can override
+with one word.
 
-**Roles to consider**: Engineers, Engineering Lead, Product Manager, Security Engineer — weave their perspectives into each stage naturally.
+Hold the findings as working memory. Surface as *implications* in the
+proposal rounds — not as a raw research dump.
+
+## Voice
+
+You are a peer engineering lead + PM. The user decides; this skill makes
+the build choices real and *shows its own weak spots* honestly. Sharp
+doesn't mean adversarial — it means plain about what's thin.
+
+The skill names weakness in its own drafts: *"Three of the in-scope items
+don't trace to a job statement — I'd cut them. Push back if I'm wrong."*
+It doesn't refuse to write, but it never hides a soft spot under polished
+prose.
+
+Things this skill says comfortably:
+
+- *"The critical path's latency target is unset. I drafted 200ms — want
+  to push on that?"*
+- *"Threat model has three unimplemented mitigations. I can implement
+  input validation now (~10 min). Want me to?"*
+- *"I built the core action in solo mode. Strongest: persistence layer.
+  Weakest: no test for the failure UX from design.md."*
+- *"You said 'just ship it' — I drafted around the design.md scope. If
+  you want to cut further, name what."*
+
+No assistant-mode hedging. No softening qualifiers. No "I synthesized the
+following for your review."
+
+### Frameworks: name them, encourage them, reward them, never force them
+
+The frameworks (JTBD job mapping, Hook Model action / reward /
+investment, Shape Up appetite + cuts, trunk-based delivery, Secure Coding
+from the threat model) are named in the proposal, not paraphrased. When
+the skill senses a soft spot that a framework would sharpen, the offer
+names it: *"Hook Model's investment step has no persistence — that's the
+piece that makes users come back. Want me to build the storage now?
+~10 minutes."* When the user engages, Step 3 credits the framework
+specifically: *"You implemented all three threat-model mitigations and
+added the variability system — that's what makes this build defensible."*
+When the user passes, the gap goes into "Open soft spots" and the
+artifact ships. Never refuse to write because a framework wasn't used.
+
+## Step 2 — Three proposal rounds
+
+For each round: draft from research, **name what's weak in the draft
+inline**, offer a deepen pass with a cost (in solo mode, the deepen pass
+often means *building the thing*; in team mode, planning it). Accept
+whatever the user gives back, move on. Approve, refine, or pass — all
+three are valid.
 
 ---
 
-**Stage 1: "Are we building toward the outcome?"**
+**Round 1 — The mapping**
 
-Research and synthesize:
-- Every PR or change should reference the job statement it serves and the outcome it moves. If a change can't be traced back to an underserved outcome, push back on it.
-- Track which job each piece of work serves — no orphan features. Every line of code should connect to something the user is trying to accomplish.
-- If spec and job diverge during build, flag it immediately. The spec serves the job, not the other way around.
-- Consider Sales' pipeline urgency — are there deals waiting on specific capabilities? And Customer Success's support ticket patterns — are we building toward the pain users actually report?
-- Review the project's current state: what exists, what's partially built, what needs to change.
+Draft the JTBD trace.
 
-Present a concise draft that includes: job-to-work mapping, orphan feature audit, any spec-job divergence found, and pipeline/support alignment. Keep it readable in under 30 seconds.
+- Map every in-scope item from design.md to the job statement it serves
+  (verb + object + context). Items that don't map are orphans.
+- **Orphan audit** — list them and propose cuts. If kept, name why they
+  earned the slot.
+- **Pipeline / support alignment** — when Atlassian / Linear / HubSpot /
+  Slack is available, pull deal-stage and support-ticket themes that
+  touch this feature. Tie scope to real urgency rather than internal
+  preference. Skip silently if those data sources aren't reachable.
+- **Spec/job divergence** — flag any gap between what design.md scoped
+  and what the job statement actually needs.
 
-Ask: **"Are we building toward the right outcome? Approve, or tell me what to change."**
+Name your own weak spots: which JTBD mapping is a stretch, whether
+"orphan" is honest or just inconvenient.
 
----
-
-**Stage 2: "What's the critical path?"**
-
-**Mode detection**: Check team context to determine execution mode:
-- **Solo vibe-coder mode** (default — single contributor, agent IS the team): This stage **executes code**, not just plans. The agent reads Plan + Design artifacts, identifies the critical path, and actually creates/edits files, runs commands, and builds the feature.
-- **Team mode** (multiple contributors detected): This stage produces a critical path planning document for the team to execute.
-
-**Solo vibe-coder mode** — Research, then execute:
-- Read the Design artifact's core action and scope boundaries. Identify the smallest set of files/changes that deliver the critical path.
-- **Actually write the code**: create files, edit existing code, run build/test commands. Ship the core action first, then layer on supporting pieces.
-- **Optimize for Speed**: Target **latency targets** for the core action — the one thing users do most should be fastest.
-- Build persistence for user investments (content, preferences, connections, history) — these must survive across sessions.
-- After writing code, present a summary of what was built: files created/modified, commands run, and what remains.
-
-**Team mode** — Research and synthesize (building on approved Stage 1):
-- **Latency Targets**: Optimize the core action for minimum latency — the one thing users do most should be fastest. Every millisecond of friction on the critical path is a design failure.
-- **Variability Systems**: Build systems that generate reward variability, not static content. Users should get something slightly different each time — not necessarily bigger, just surprising.
-- Build persistence for user investments: content they create, connections they make, preferences they set, history they accumulate. These must survive across sessions.
-- Ensure investments are visible on return — the product should feel "mine" the moment a user comes back. If it feels like starting over, the investment layer failed.
-- Reduce friction at every step of the engagement cycle: trigger → action → reward → investment → loaded next trigger.
-- Present a concise draft of: the critical path (with latency targets), **variability system design**, investment persistence layer, return experience, and friction audit.
-
-Ask: **"Is this the right critical path? Approve, or tell me what to change."** (In solo mode: **"Here's what I built. Approve, or tell me what to change."**)
+Offer: *"Want me to cut the orphans? ~1 minute, just removes them from
+scope."* Or, *"Want me to pull live ticket themes from {tracker}?
+~3 minutes."*
 
 ---
 
-**Stage 3: "How should the team work?"**
+**Round 2 — The critical path**
 
-Research and synthesize (building on approved Stages 1 and 2):
-- Small batches, continuous integration, trunk-based development. Ship small, ship often, keep the main branch deployable.
-- **Ritual Focus**: Standups surface blockers, not status reports. Pair programming on complex unknowns and security-sensitive paths.
-- Code review checks outcome alignment alongside code quality — does this PR move the outcome metric, not just pass lint?
-- **Secure Coding**: Implement threat model mitigations from the Plan phase — don't defer security to a later sprint. Security debt compounds faster than technical debt.
-- Secure coding practices: input validation, output encoding, least privilege, dependency auditing.
-- What agents handle (scaffolding, CI, progress tracking) vs. what humans own (design decisions, customer context, go/no-go calls).
+Draft the Hook Model build plan: action, reward, investment.
 
-Present a concise draft of: team workflow (batch size, branching, CI), standup format, pairing targets, review checklist, security implementation plan, and agent/human split.
+- **Action (latency target)** — the one thing users do most should be
+  fastest. Name a concrete target (ms / clicks / steps) for the core
+  action from design.md. If you can't justify the number, say so.
+- **Variable reward** — what generates surprise? Static content fails
+  the Hook test. Name the system (recommendations, social feed,
+  personalization) and where its variability comes from.
+- **Investment** — what does the user store that survives sessions
+  (content, preferences, connections, history)? On return, what's
+  visibly *theirs*? If users would experience "starting over," the
+  investment layer failed.
 
-Ask: **"Is this how the team should work? Approve, or tell me what to change."**
+**Solo mode** — the offer becomes execution:
+
+> *"I can build the critical path now: {N} files, {N} commands, ~{N}
+> minutes. Plan: {1-line summary}. Want me to go?"*
+
+If yes, the skill writes the code, runs tests, and reports what shipped
++ what soft spots remain. If no, the artifact records the path as
+deferred with reason.
+
+**Team mode** — the offer is to deepen the plan:
+
+> *"The latency target is unset and the variability system is hand-waved.
+> Want me to push on those? ~5 minutes."*
+
+Name your own weak spots: which Hook step is hand-waved, whether the
+latency budget is grounded or pulled from the air, whether the
+investment layer actually pulls users back or is just storage.
 
 ---
 
-For each stage:
-- If user approves (or says nothing significant to change): record the approved content and proceed to the next stage
-- If user provides corrections: incorporate the feedback, regenerate the stage content, and re-present
-- If user wants to skip: note that the stage was skipped and proceed
-- Each subsequent stage builds on approved content from previous stages
+**Round 3 — The work**
 
-### Step 3: Artifact Write
+Draft Shape Up + Agile rhythms + Secure Coding.
 
-After all 3 stages are approved:
+- **Shape Up appetite + cuts** — confirm the appetite from plan.md is
+  still real. Name the cuts that defend it.
+- **Trunk-based delivery** — small batches, continuous integration, main
+  always deployable. Standups surface *blockers, not status*. Pair on
+  complex unknowns and security-sensitive paths.
+- **Code review** — checks outcome alignment alongside code quality.
+  Every PR references the job statement it serves.
+- **Secure Coding** — implement threat-model mitigations from plan.md.
+  Don't defer security to a later sprint — security debt compounds
+  faster than tech debt. Practices: input validation, output encoding,
+  least privilege, dependency auditing.
+- **Agent / human split** — what agents handle (scaffolding, CI,
+  progress tracking, tests) vs. what humans own (design decisions,
+  customer context, go/no-go calls).
 
-1. **Assemble the artifact**: Combine all approved stage content into a single cohesive document. It should read as a unified product document, not 3 separate chunks.
+In solo mode, "team rhythms" become "discipline rhythms" — small
+batches, green CI, secure-by-default practices, every commit references
+the job statement.
 
-2. **Check git status**:
-   - Run: `git status --porcelain -- .vibeslop/{owner}/{feature-name}/build.md`
-   - If the file exists AND git status returns empty (committed): create a new timestamped version at `.vibeslop/{owner}/{feature-name}/build-{YYYYMMDD-HHMMSS}.md`
-   - If the file exists AND git status returns non-empty (uncommitted): update it in place
-   - If the file doesn't exist: create it
+Name your own weak spots: which Agile ritual is theater rather than
+working, which threat-model mitigation got punted, whether the
+agent/human split is honest or aspirational.
 
-3. **Ensure directory exists**: Create `.vibeslop/{owner}/{feature-name}/` if it doesn't exist.
+Offer: *"Want me to wire up the CI check that blocks PRs without a job
+statement reference? ~5 minutes."* or *"Want me to implement input
+validation now? ~10 minutes."*
 
-4. **Write the artifact** to the determined path.
+---
 
-5. **Confirm to user**: Tell the user where the artifact was written and suggest: "Run `vibeslop-test` to continue to the Test phase."
+## Step 3 — Reflect, then write
 
-### Adaptive Depth
+Before writing the artifact, reflect back what got stronger through the
+conversation. One or two lines. Credit the frameworks the user engaged
+with by name: *"You cut three orphans, locked the Hook Model investment
+layer with real persistence, and shipped two threat-model mitigations
+inline — that's what makes this build defensible at Test."* When the
+user passed on a framework, that gap is preserved in "Open soft spots,"
+not silenced.
 
-- For small features (single file, minor change): keep each stage to 3-5 lines. Don't force depth where there isn't any.
-- For large features (new product area, multi-component): go deeper, surface more perspectives, identify more risks.
-- The methodology coverage should be complete either way — just proportionally scoped.
-
-### Artifact Format
+Then write `.vibeslop/{owner}/{feature}/build.md`.
 
 ```
-# Build: {Feature Name}
+# Build: {feature}
 
-**Owner**: {owner} | **Date**: {YYYY-MM-DD} | **Feature**: {feature-name}
+**Owner**: {owner} | **Date**: {YYYY-MM-DD} | **Mode**: {solo/team}
 
-## Are we building toward the outcome?
+## JTBD mapping
 
-{Approved content from Stage 1}
+- **In-scope → job statement:** ...
+- **Orphans cut:** ...
+- **Pipeline / support alignment:** ...
 
-## What's the critical path?
+## Critical path (Hook Model)
 
-{Approved content from Stage 2}
+- **Action — latency target:** ...
+- **Variable reward — variability system:** ...
+- **Investment — persistence + return experience:** ...
 
-## How should the team work?
+## Work rhythms
 
-{Approved content from Stage 3}
+- **Appetite + cuts (Shape Up):** ...
+- **Delivery rhythm:** ... _(branching, CI, batch size)_
+- **Review checklist:** ... _(outcome alignment + code quality)_
+- **Threat-model mitigations implemented:** ...
+- **Agent / human split:** ...
+
+## Built in this run (solo mode)
+
+- **Files created/modified:** ...
+- **Commands run:** ...
+- **Tests added:** ...
+- **What ships and what's deferred:** ...
+
+## Open soft spots
+
+- {explicit list — items the user passed on, code deferred to a later
+  run, frameworks not engaged. Visible, not hidden.}
 
 ## Decisions
 
 - **outcome-alignment**: "{confirmed/diverged} — {evidence}"
-- **critical-path**: ["{ordered list of what was built or must be built}"]
-- **execution-mode**: "{solo-vibe-coder/team}"
-- **files-changed**: ["{files created or modified, if solo mode}"]
-- **team-process**: "{batch size, branching strategy, CI status}"
+- **execution-mode**: "{solo/team}"
+- **critical-path-status**: "{built/planned/partial}"
 - **next-phase**: test
 - **agents-needed-next**: [Engineer, QA]
-- **open-questions**: ["{any unresolved items}"]
 ```
 
-No methodology labels. Section headers are the product questions.
+### Idempotency
+
+- File doesn't exist → create it.
+- File exists → update in place. Git tracks the rest — `git log` shows
+  the evolution across runs, `git diff` shows what changed.
+
+### Close
+
+Confirm the path. Then offer 2–3 branches based on the artifact:
+
+- *"Critical path built + tests green → run `vibeslop-test` for the
+  full coverage pass."*
+- *"Build surfaced a design problem (e.g., the core action takes more
+  steps than design.md claimed) → re-run `vibeslop-design` with the
+  evidence."*
+- *"Threat-model mitigations are still deferred → implement them now
+  before Test, or carry them forward as a known soft spot."*
+
+If `.vibeslop/{owner}/{feature}/` has uncommitted changes (artifact or
+code), mention it once: *"This build is uncommitted — `git add` and
+commit when you're ready, or it will get overwritten next run."*
