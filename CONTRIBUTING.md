@@ -52,4 +52,4 @@ before submitting:
 ## License
 
 By contributing, you agree your contributions are licensed under the
-MIT License (see [LICENSE](LICENSE)).
+Apache License 2.0 (see [LICENSE](LICENSE)).

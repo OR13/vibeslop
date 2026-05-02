@@ -1,97 +1,126 @@
-# vibeslop
+# ⚡ Vibeslop
 
-A product methodology shipped as Claude Code slash commands. Sharp
-peer thinking partners across the lifecycle of a product bet — from
-choosing what's worth doing to facing whether the work moved the
-needle.
+> *"Ship products, not features."*
 
-These commands don't soften, don't synthesize on top of bad inputs,
-and don't produce artifacts until the thinking is real. They are
-deliberately rude when you're hand-waving.
+Product delivery skills for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that apply **four proven methodologies** across every phase of development. One install. Seven slash commands. Continuous improvement. 🔄
 
-## The phases
+### 🌐 [See the interactive methodology → or13.io/vibeslop](https://or13.io/vibeslop)
 
-| Phase | Command | Question it forces |
-|-------|---------|--------------------|
-| Analyze | [`/vibeslop.analyze`](commands/vibeslop.analyze.md) | What's not working? |
-| Plan | [`/vibeslop.plan`](commands/vibeslop.plan.md) | What problem are we solving and is it worth it? |
-| Design | [`/vibeslop.design`](commands/vibeslop.design.md) | What does success look like, and what's the smallest version that could earn it? |
-| Build | [`/vibeslop.build`](commands/vibeslop.build.md) | Let the team solve the problem their way. |
-| Test | [`/vibeslop.test`](commands/vibeslop.test.md) | Catch the gap between what we built and what the customer needs. |
-| Launch | [`/vibeslop.launch`](commands/vibeslop.launch.md) | Get the work into customers' hands. |
-| Review | [`/vibeslop.review`](commands/vibeslop.review.md) | Did this move the needle? |
-| Stats | [`/vibeslop.stats`](commands/vibeslop.stats.md) | What's hiding in your product thinking? |
+## 🔄 The Cycle
 
-Each phase writes an artifact at
-`.vibeslop/{owner}/{feature}/{phase}.md` in the repo where you run it.
-Owner is derived from your git config; feature comes from the command
-arg or the current branch name (`NNN-feature-name`).
+```mermaid
+graph LR
+    P["🎯 Plan"] --> D["💎 Design"]
+    D --> B["⚡ Build"]
+    B --> T["🔮 Test"]
+    T --> R["🧬 Review"]
+    R --> L["🔥 Launch"]
+    L --> A["🌊 Analyze"]
+    A -->|next cycle| P
 
-## Install
-
-These are [Claude Code slash commands](https://docs.claude.com/en/docs/claude-code/slash-commands)
-(`<name>.md` with a `description` frontmatter field), not Agent
-Skills. They run only inside Claude Code.
-
-### Project-scoped
-
-```bash
-# from your project root
-git clone https://github.com/OR13/vibeslop .vibeslop
-mkdir -p .claude
-ln -sf ../.vibeslop/commands .claude/commands
+    style P fill:#10b981,stroke:#059669,color:#fff
+    style D fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style B fill:#f59e0b,stroke:#d97706,color:#fff
+    style T fill:#3b82f6,stroke:#2563eb,color:#fff
+    style R fill:#ec4899,stroke:#db2777,color:#fff
+    style L fill:#ef4444,stroke:#dc2626,color:#fff
+    style A fill:#06b6d4,stroke:#0891b2,color:#fff
 ```
 
-If you already have a `.claude/commands/` directory you want to keep,
-symlink the individual files instead:
+| Command | Phase | *The Vibe* |
+|---------|-------|-----------|
+| `/vibeslop.plan` | 🎯 Plan | *"Choose what's worth building next"* |
+| `/vibeslop.design` | 💎 Design | *"Sketch the solution at the right altitude"* |
+| `/vibeslop.build` | ⚡ Build | *"Let the team solve the problem their way"* |
+| `/vibeslop.test` | 🔮 Test | *"Catch the gap between built and needed"* |
+| `/vibeslop.review` | 🧬 Review | *"Face whether the work moved the needle"* |
+| `/vibeslop.launch` | 🔥 Launch | *"Get the work into customers' hands"* |
+| `/vibeslop.analyze` | 🌊 Analyze | *"Name what's not working"* |
+
+## 🚀 Install
 
 ```bash
-git clone https://github.com/OR13/vibeslop .vibeslop
-mkdir -p .claude/commands
-for f in .vibeslop/commands/vibeslop.*.md; do
-  ln -sf "../../$f" ".claude/commands/$(basename "$f")"
-done
+curl -fsSL https://raw.githubusercontent.com/or13/vibeslop/main/install.sh | bash
 ```
 
-Pull updates with `git -C .vibeslop pull`.
+> 📦 **One-liner** · 🚫 **No dependencies** · 🔌 **Speckit optional**
 
-### User-scoped
+Update to the latest:
 
 ```bash
-git clone https://github.com/OR13/vibeslop ~/.vibeslop
-mkdir -p ~/.claude/commands
-for f in ~/.vibeslop/commands/vibeslop.*.md; do
-  ln -sf "$f" ~/.claude/commands/
-done
+curl -fsSL https://raw.githubusercontent.com/or13/vibeslop/main/install.sh | bash -s -- --force
 ```
 
-After install, restart Claude Code and the commands appear under
-`/vibeslop.*`.
+## 🔍 Four Lenses
 
-## Voice
+Every phase applies the same four methodology lenses — the agent does the work, then presents condensed findings for your review.
 
-Each command shares a deliberate stance:
+```mermaid
+graph TD
+    F["Feature Idea"] --> L1["🎯 Jobs to Be Done"]
+    F --> L2["🔁 Hook Model"]
+    F --> L3["📐 Agile Delivery"]
+    F --> L4["🤖 Agentic SDLC"]
+    L1 --> A["Artifact → plan.md"]
+    L2 --> A
+    L3 --> A
+    L4 --> A
 
-> Sharp peer, not polite assistant. The user decides; the command
-> makes the thinking real. Push back, name what's being avoided, and
-> refuse to produce the artifact until the answers are honest.
+    style F fill:#1e293b,stroke:#475569,color:#fff
+    style A fill:#10b981,stroke:#059669,color:#fff
+```
 
-If you want a polite assistant, this isn't the right toolkit.
+🎯 **[Jobs to Be Done](https://or13.io/vibeslop#jtbd)** — Frame work around customer struggling moments, not feature lists. Score outcomes by importance × satisfaction gap.
 
-## Contributing
+🔁 **[Hook Model](https://or13.io/vibeslop#hook-model)** — Design habit loops: trigger → action → variable reward → investment. If there's no natural hook, the skill says so.
 
-PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Each command
-should:
+📐 **[Agile Delivery](https://or13.io/vibeslop#agile)** — Fixed time, variable scope. Every bet has an appetite and explicit cuts. No unbounded backlogs.
 
-- Live at `commands/vibeslop.<phase>.md`
-- Open with a `description:` frontmatter line (Claude Code reads this
-  as the trigger summary)
-- Carry the same voice — rude on hand-waving, specific in pushback,
-  no artifact until the thinking lands
-- Write its artifact to `.vibeslop/{owner}/{feature}/{phase}.md` and
-  honor the same idempotency rules (create / update-in-place /
-  timestamped-side-by-side)
+🤖 **[Agentic SDLC](https://or13.io/vibeslop#agentic)** — When no human fills a team role, agents fill it — faster. Define tool categories and human vs. agent responsibilities.
 
-## License
+## ✨ How It Feels
 
-MIT — see [LICENSE](LICENSE).
+You type a command. The agent researches your codebase, drafts all four lenses, and presents **condensed findings** — not a wall of text:
+
+```
+🎯 Plan complete for: Add user onboarding flow
+
+⚡ Agents filling reviewer + tester roles — no human bottleneck
+💎 Opportunity gap of 8 — users desperately want this but nothing exists
+⚠️ Auth integration is a security-sensitive path — needs threat modeling
+🔮 2-day appetite is tight if we include email verification
+
+Say "ok" to proceed or ask about any item.
+```
+
+The full artifact is written to `plan.md` only after you approve. Each phase builds on the last. 🌐 **[See the interactive methodology →](https://or13.io/vibeslop)**
+
+## 🚀 Self-Deploying
+
+**Launch** doesn't just write an artifact — it commits and pushes your code (with your approval). **Analyze** verifies the published state matches local. The skills practice what they preach.
+
+## 🔌 Speckit Integration
+
+Works standalone or with [speckit](https://github.com/or13/speckit) for feature directory management:
+
+- **With speckit**: Artifacts go to `plan.md` in the active feature directory
+- **Without speckit**: Artifacts go to `plan.md` in the current directory
+
+## 📋 Requirements
+
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
+- `curl` (for installation)
+
+## 🤝 Contributing
+
+PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## 📄 License
+
+Apache 2.0 — see [LICENSE](LICENSE).
+
+---
+
+<p align="center">
+  🌐 <a href="https://or13.io/vibeslop"><strong>or13.io/vibeslop</strong></a> · Built with vibeslop ⚡
+</p>
