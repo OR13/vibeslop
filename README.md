@@ -2,7 +2,7 @@
 
 > *"Ship products, not features."*
 
-Product delivery skills for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that apply **four proven methodologies** across every phase of development. One install. Seven slash commands. Continuous improvement. 🔄
+Product delivery skills for any AI coding agent — packaged as vendor-neutral [Agent Skills](https://agentskills.io). Apply **four proven methodologies** across every phase of development. One install. Seven skills. Continuous improvement. 🔄
 
 ### 🌐 [See the interactive methodology → or13.io/vibeslop](https://or13.io/vibeslop)
 
@@ -27,15 +27,15 @@ graph LR
     style A fill:#06b6d4,stroke:#0891b2,color:#fff
 ```
 
-| Command | Phase | *The Vibe* |
+| Skill | Phase | *The Vibe* |
 |---------|-------|-----------|
-| `/vibeslop.plan` | 🎯 Plan | *"Choose what's worth building next"* |
-| `/vibeslop.design` | 💎 Design | *"Sketch the solution at the right altitude"* |
-| `/vibeslop.build` | ⚡ Build | *"Let the team solve the problem their way"* |
-| `/vibeslop.test` | 🔮 Test | *"Catch the gap between built and needed"* |
-| `/vibeslop.review` | 🧬 Review | *"Face whether the work moved the needle"* |
-| `/vibeslop.launch` | 🔥 Launch | *"Get the work into customers' hands"* |
-| `/vibeslop.analyze` | 🌊 Analyze | *"Name what's not working"* |
+| `vibeslop-plan` | 🎯 Plan | *"Choose what's worth building next"* |
+| `vibeslop-design` | 💎 Design | *"Sketch the solution at the right altitude"* |
+| `vibeslop-build` | ⚡ Build | *"Let the team solve the problem their way"* |
+| `vibeslop-test` | 🔮 Test | *"Catch the gap between built and needed"* |
+| `vibeslop-review` | 🧬 Review | *"Face whether the work moved the needle"* |
+| `vibeslop-launch` | 🔥 Launch | *"Get the work into customers' hands"* |
+| `vibeslop-analyze` | 🌊 Analyze | *"Name what's not working"* |
 
 ## 🚀 Install
 
@@ -50,6 +50,18 @@ Update to the latest:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/or13/vibeslop/main/install.sh | bash -s -- --force
 ```
+
+## 🤝 Harness compatibility
+
+Vibeslop ships skills in the open [agentskills.io](https://agentskills.io) format — `.agents/skills/<name>/SKILL.md` per skill — alongside the [agents.md](https://agents.md) project convention.
+
+| Harness | How it picks up the skills |
+|---|---|
+| Gemini CLI | Auto-discovers `.agents/skills/` |
+| Claude Code | Reads `.claude/skills/` — installer creates a `.claude/skills` → `.agents/skills` symlink for you |
+| Any agents.md-compliant agent | Reads `.agents/skills/` directly |
+
+The installer writes to `.agents/skills/` by default, so any harness following the standard sees the same seven skills. Earlier versions of vibeslop installed Claude-Code-only files into `.claude/commands/`; re-run the installer to migrate.
 
 ## 🔍 Four Lenses
 
@@ -80,7 +92,7 @@ graph TD
 
 ## ✨ How It Feels
 
-You type a command. The agent researches your codebase, drafts all four lenses, and presents **condensed findings** — not a wall of text:
+You invoke a skill. The agent researches your codebase, drafts all four lenses, and presents **condensed findings** — not a wall of text:
 
 ```
 🎯 Plan complete for: Add user onboarding flow
@@ -108,7 +120,7 @@ Works standalone or with [speckit](https://github.com/or13/speckit) for feature 
 
 ## 📋 Requirements
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI
+- An AI coding agent that supports the [Agent Skills](https://agentskills.io) standard (e.g., Claude Code, Gemini CLI, or any [agents.md](https://agents.md)-compliant tool)
 - `curl` (for installation)
 
 ## 🤝 Contributing

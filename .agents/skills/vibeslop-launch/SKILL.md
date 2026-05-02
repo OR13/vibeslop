@@ -1,4 +1,5 @@
 ---
+name: vibeslop-launch
 description: "Launch-phase skill for the vibeslop product methodology. Helps get the work into customers' hands."
 ---
 
@@ -6,7 +7,7 @@ description: "Launch-phase skill for the vibeslop product methodology. Helps get
 
 ## User Input
 
-The text the user typed after `/vibeslop.launch` is the feature description.
+The feature description is whatever the agent's harness passed as input to this skill.
 If empty and a `.vibeslop/` directory exists, look for the most recent feature context.
 If still empty, ask the user what feature they want to launch.
 
@@ -114,7 +115,7 @@ After all 3 stages are approved:
 
 5. **Confirm to user**: Tell the user where the artifact was written and strongly suggest:
 
-   > Run `/vibeslop.analyze` to close the loop. Analyze produces the evidence-ranked bet list that feeds your next Plan cycle. Without it, the next cycle starts cold — you lose the compounding effect of evidence-informed planning.
+   > Run `vibeslop-analyze` to close the loop. Analyze produces the evidence-ranked bet list that feeds your next Plan cycle. Without it, the next cycle starts cold — you lose the compounding effect of evidence-informed planning.
 
 ### Adaptive Depth
 

@@ -1,4 +1,5 @@
 ---
+name: vibeslop-review
 description: "Review-phase skill for the vibeslop product methodology. Helps face whether the work moved the needle."
 ---
 
@@ -6,7 +7,7 @@ description: "Review-phase skill for the vibeslop product methodology. Helps fac
 
 ## User Input
 
-The text the user typed after `/vibeslop.review` is the feature description.
+The feature description is whatever the agent's harness passed as input to this skill.
 If empty and a `.vibeslop/` directory exists, look for the most recent feature context.
 If still empty, ask the user what feature they want to review.
 
@@ -111,7 +112,7 @@ After all 3 stages are approved:
 
 4. **Write the artifact** to the determined path.
 
-5. **Confirm to user**: Tell the user where the artifact was written and suggest: "Run `/vibeslop.launch` to continue to the Launch phase."
+5. **Confirm to user**: Tell the user where the artifact was written and suggest: "Run `vibeslop-launch` to continue to the Launch phase."
 
 ### Adaptive Depth
 
