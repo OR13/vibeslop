@@ -173,6 +173,8 @@ Apache 2.0. See [LICENSE](LICENSE).
 
 ---
 
-<p align="center">DO NOT ADJUST YOUR SET.</p>
+<p align="center"><img src="assets/landfill.gif" alt="Landfill" width="480"></p>
+
+<p align="center"><em>Landfill — where consumption ends. The machine pushes forward through what we discarded.</em></p>
 
 <p align="center"><a href="https://or13.io/vibeslop"><strong>or13.io/vibeslop</strong></a></p>
