@@ -1,52 +1,53 @@
 # Contributing to vibeslop
 
-## Adding a skill
+## Adding a phase command
 
-1. Create `skills/<your-skill-name>/SKILL.md`.
-2. Open the file with YAML frontmatter:
+1. Create `commands/vibeslop.<phase>.md`.
+2. Open with frontmatter:
 
    ```markdown
    ---
-   name: your-skill-name
-   description: One sentence that helps an agent decide whether this skill is relevant. The agent reads only the description until the skill is loaded — make it specific.
+   description: "<phase>-phase command for the vibeslop product methodology. <one sentence on what it forces>."
    ---
-
-   # Your skill name
-
-   ...
    ```
 
-3. Write the body. Keep it task-focused: what to do, in what order, with
-   what tools. Prefer concrete examples over abstract guidance.
-4. Add a row to the skills table in [README.md](README.md).
-5. Open a PR.
+3. Match the existing voice — sharp peer thinking partner, not polite
+   assistant. Specific pushback, named pitfalls, refuse-to-produce
+   when the inputs are hand-wavy.
+4. Write to `.vibeslop/{owner}/{feature}/{phase}.md` with the same
+   idempotency rules other phases use (create / update-in-place /
+   timestamped side-by-side when the file is already committed).
+5. Add a row to the table in [README.md](README.md).
+6. Open a PR.
 
-## Updating an existing skill
+## Editing existing commands
 
-Edits to `SKILL.md` content are welcome. If the change is purely
-mechanical (typos, wording), no issue is needed. For behavioral changes,
-open an issue first or include rationale in the PR description.
+Edits to wording, pushback heuristics, and artifact skeletons are
+welcome. For changes to the voice or the artifact contract, open an
+issue first or include rationale in the PR.
 
 ## Style
 
-- Skills must be self-contained — no cross-imports between skills.
-- Document any external state paths the skill reads or writes.
-- The `description` field in frontmatter is what an agent sees first.
-  Lead with the trigger condition ("Use when ..."), keep it under ~250
-  characters.
-- Plain markdown only. No HTML, no images that aren't strictly
-  necessary.
+- Markdown only.
+- Frontmatter: `description` is required (Claude Code uses it as the
+  trigger summary). Keep it under ~250 characters and lead with the
+  phase label.
+- Don't soften the voice. If a heuristic feels rude, that's likely
+  correct — these commands exist to surface what a polite assistant
+  would skip past.
+- Don't add commands outside the lifecycle without discussion. The
+  set is meant to stay small and load-bearing.
 
 ## Testing
 
-Skills are documents, not code, but their *behavior* is whatever an
-agent does when it reads them. Before submitting:
+Run the command end-to-end inside Claude Code on a real feature
+before submitting:
 
-- Load the skill into Claude Code or Gemini CLI and run it end-to-end.
-- Confirm the description triggers cleanly (no false positives, no
-  missed cases).
-- If the skill writes state to disk, verify the paths exist or are
-  created.
+- Verify the description triggers when intended.
+- Walk through the prompts; confirm the pushback fires on
+  intentionally weak inputs.
+- Confirm the artifact lands at the documented path with the
+  documented idempotency behavior.
 
 ## License
 

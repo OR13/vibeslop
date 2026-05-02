@@ -1,89 +1,96 @@
 # vibeslop
 
-A small, opinionated set of [Agent Skills](https://agentskills.io) for
-Claude Code, Gemini CLI, and any other agent harness that follows the
-open-standard `<name>/SKILL.md` layout.
+A product methodology shipped as Claude Code slash commands. Sharp
+peer thinking partners across the lifecycle of a product bet — from
+choosing what's worth doing to facing whether the work moved the
+needle.
 
-## Skills
+These commands don't soften, don't synthesize on top of bad inputs,
+and don't produce artifacts until the thinking is real. They are
+deliberately rude when you're hand-waving.
 
-| Skill | What it does |
-|-------|--------------|
-| [`social-config`](skills/social-config/SKILL.md) | View / modify social-media posting preferences. |
-| [`post-content`](skills/post-content/SKILL.md) | Draft and publish hot takes to Bluesky and X.com. |
-| [`discover-accounts`](skills/discover-accounts/SKILL.md) | Find candidate accounts to follow via seed crawl + platform search. |
-| [`filter-follows`](skills/filter-follows/SKILL.md) | Audit followed accounts and recommend unfollows for off-topic content. |
-| [`memory-reflect`](skills/memory-reflect/SKILL.md) | Persist durable items from a conversation into a Letta-style context repository. |
-| [`memory-defrag`](skills/memory-defrag/SKILL.md) | Audit a context repository and consolidate toward 15–25 focused files per tier. |
+## The phases
 
-Each skill is a single `SKILL.md` with YAML frontmatter
-(`name`, `description`) followed by markdown instructions. That format is
-the [Agent Skills](https://agentskills.io) open standard, and is read
-natively by Claude Code (`.claude/skills/<name>/SKILL.md`) and Gemini CLI
-(`.agents/skills/<name>/SKILL.md`).
+| Phase | Command | Question it forces |
+|-------|---------|--------------------|
+| Analyze | [`/vibeslop.analyze`](commands/vibeslop.analyze.md) | What's not working? |
+| Plan | [`/vibeslop.plan`](commands/vibeslop.plan.md) | What problem are we solving and is it worth it? |
+| Design | [`/vibeslop.design`](commands/vibeslop.design.md) | What does success look like, and what's the smallest version that could earn it? |
+| Build | [`/vibeslop.build`](commands/vibeslop.build.md) | Let the team solve the problem their way. |
+| Test | [`/vibeslop.test`](commands/vibeslop.test.md) | Catch the gap between what we built and what the customer needs. |
+| Launch | [`/vibeslop.launch`](commands/vibeslop.launch.md) | Get the work into customers' hands. |
+| Review | [`/vibeslop.review`](commands/vibeslop.review.md) | Did this move the needle? |
+| Stats | [`/vibeslop.stats`](commands/vibeslop.stats.md) | What's hiding in your product thinking? |
+
+Each phase writes an artifact at
+`.vibeslop/{owner}/{feature}/{phase}.md` in the repo where you run it.
+Owner is derived from your git config; feature comes from the command
+arg or the current branch name (`NNN-feature-name`).
 
 ## Install
 
-### Project-scoped (recommended)
+These are [Claude Code slash commands](https://docs.claude.com/en/docs/claude-code/slash-commands)
+(`<name>.md` with a `description` frontmatter field), not Agent
+Skills. They run only inside Claude Code.
 
-Clone the repo into your workspace and symlink the `skills/` directory at
-the path your agent harness reads from:
+### Project-scoped
 
 ```bash
 # from your project root
 git clone https://github.com/OR13/vibeslop .vibeslop
+mkdir -p .claude
+ln -sf ../.vibeslop/commands .claude/commands
+```
 
-# Claude Code
-mkdir -p .claude && ln -sf ../.vibeslop/skills .claude/skills
+If you already have a `.claude/commands/` directory you want to keep,
+symlink the individual files instead:
 
-# Gemini CLI
-mkdir -p .agents && ln -sf ../.vibeslop/skills .agents/skills
+```bash
+git clone https://github.com/OR13/vibeslop .vibeslop
+mkdir -p .claude/commands
+for f in .vibeslop/commands/vibeslop.*.md; do
+  ln -sf "../../$f" ".claude/commands/$(basename "$f")"
+done
 ```
 
 Pull updates with `git -C .vibeslop pull`.
 
 ### User-scoped
 
-For a global install across all projects:
-
 ```bash
 git clone https://github.com/OR13/vibeslop ~/.vibeslop
-ln -sf ~/.vibeslop/skills ~/.claude/skills
+mkdir -p ~/.claude/commands
+for f in ~/.vibeslop/commands/vibeslop.*.md; do
+  ln -sf "$f" ~/.claude/commands/
+done
 ```
 
-### Cherry-pick individual skills
+After install, restart Claude Code and the commands appear under
+`/vibeslop.*`.
 
-Skills are independent; you can symlink them one at a time:
+## Voice
 
-```bash
-git clone https://github.com/OR13/vibeslop ~/.vibeslop
-ln -sf ~/.vibeslop/skills/post-content ~/.claude/skills/post-content
-```
+Each command shares a deliberate stance:
 
-## Requirements
+> Sharp peer, not polite assistant. The user decides; the command
+> makes the thinking real. Push back, name what's being avoided, and
+> refuse to produce the artifact until the answers are honest.
 
-The social-media skills (`social-config`, `post-content`,
-`discover-accounts`, `filter-follows`) read and write state in
-`$OVERMIND_ROOT/.git-ignored/social-media/`. They were extracted from
-[overmind](https://github.com/OR13/overmind) and currently expect that
-env var to be set. Outside overmind, point `OVERMIND_ROOT` at any
-writable directory you'd like to use for state — generalizing this path
-is tracked as future work.
-
-The memory skills (`memory-reflect`, `memory-defrag`) implement the
-[Letta context-repository pattern](https://www.letta.com/blog/context-repositories)
-and assume a `memory/` directory layout with `memory/*.md` (auto-loaded
-top-level) and `memory/<topic>/...` (on-demand nested) tiers, optionally
-plus a `memory/private/` mount. Adapt as needed for your harness.
+If you want a polite assistant, this isn't the right toolkit.
 
 ## Contributing
 
-PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Each skill should:
+PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md). Each command
+should:
 
-- Live at `skills/<name>/SKILL.md`
-- Open with valid YAML frontmatter (`name`, `description` required;
-  `description` is what triggers the skill, so write it carefully)
-- Be self-contained — no cross-skill imports, and any external state
-  paths should be documented in the skill body
+- Live at `commands/vibeslop.<phase>.md`
+- Open with a `description:` frontmatter line (Claude Code reads this
+  as the trigger summary)
+- Carry the same voice — rude on hand-waving, specific in pushback,
+  no artifact until the thinking lands
+- Write its artifact to `.vibeslop/{owner}/{feature}/{phase}.md` and
+  honor the same idempotency rules (create / update-in-place /
+  timestamped-side-by-side)
 
 ## License
 
