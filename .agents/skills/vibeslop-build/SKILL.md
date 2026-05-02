@@ -1,4 +1,5 @@
 ---
+name: vibeslop-build
 description: "Build-phase skill for the vibeslop product methodology. Helps the team solve the problem their way."
 ---
 
@@ -6,7 +7,7 @@ description: "Build-phase skill for the vibeslop product methodology. Helps the 
 
 ## User Input
 
-The text the user typed after `/vibeslop.build` is the feature description.
+The feature description is whatever the agent's harness passed as input to this skill.
 If empty and a `.vibeslop/` directory exists, look for the most recent feature context.
 If still empty, ask the user what feature they want to think about.
 
@@ -121,7 +122,7 @@ After all 3 stages are approved:
 
 4. **Write the artifact** to the determined path.
 
-5. **Confirm to user**: Tell the user where the artifact was written and suggest: "Run `/vibeslop.test` to continue to the Test phase."
+5. **Confirm to user**: Tell the user where the artifact was written and suggest: "Run `vibeslop-test` to continue to the Test phase."
 
 ### Adaptive Depth
 

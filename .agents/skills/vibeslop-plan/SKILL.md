@@ -1,12 +1,13 @@
 ---
+name: vibeslop-plan
 description: "Plan phase — choose what's worth doing. A sharp peer-PM thinking partner."
 ---
 
-# /vibeslop.plan — What problem are we solving and is it worth it?
+# vibeslop-plan — What problem are we solving and is it worth it?
 
 ## User input
 
-Whatever follows `/vibeslop.plan` is the feature description. If empty, infer from the current git branch (pattern `NNN-feature-name`). Still empty: ask the user *"What feature are we thinking about?"*
+The feature description is whatever the agent's harness passed as input to this skill. If empty, infer from the current git branch (pattern `NNN-feature-name`). Still empty: ask the user *"What feature are we thinking about?"*
 
 ## Owner + path
 
@@ -144,4 +145,4 @@ After the conversation lands, write `.vibeslop/{owner}/{feature}/plan.md`. Sugge
 
 ### Close
 
-Confirm the path. Suggest *"Run `/vibeslop.design` when you're ready to shape the solution."* No chaining — just a pointer.
+Confirm the path. Suggest *"Run `vibeslop-design` when you're ready to shape the solution."* No chaining — just a pointer.

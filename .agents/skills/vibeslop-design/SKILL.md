@@ -1,12 +1,13 @@
 ---
+name: vibeslop-design
 description: "Design phase — shape the simplest version that works. A sharp peer-designer thinking partner."
 ---
 
-# /vibeslop.design — What does success look like, and what's the smallest version that could earn it?
+# vibeslop-design — What does success look like, and what's the smallest version that could earn it?
 
 ## User input
 
-Whatever follows `/vibeslop.design` is the feature description. If empty, infer from the current git branch (pattern `NNN-feature-name`). Still empty: ask the user *"What feature are we designing?"*
+The feature description is whatever the agent's harness passed as input to this skill. If empty, infer from the current git branch (pattern `NNN-feature-name`). Still empty: ask the user *"What feature are we designing?"*
 
 ## Owner + path
 
@@ -88,7 +89,7 @@ Cagan's value + usability risks aren't resolved by talking — they're resolved 
 - What did they struggle with that you didn't expect?
 - What did you change?
 
-*If no prototype was tested: insist on at least a 30-minute prototype before locking the design. Claude Code can produce a working HTML prototype in minutes.*
+*If no prototype was tested: insist on at least a 30-minute prototype before locking the design. Most AI coding agents can produce a working HTML prototype in minutes.*
 
 ## Suggest when relevant
 
@@ -176,4 +177,4 @@ After the conversation lands, write `.vibeslop/{owner}/{feature}/design.md`. Sug
 
 ### Close
 
-Confirm the path. Suggest *"Run `/vibeslop.build` when you're ready to make it real."* No chaining — just a pointer.
+Confirm the path. Suggest *"Run `vibeslop-build` when you're ready to make it real."* No chaining — just a pointer.

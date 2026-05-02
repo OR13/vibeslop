@@ -1,4 +1,5 @@
 ---
+name: vibeslop-analyze
 description: "Analyze-phase skill for the vibeslop product methodology. Helps name what's not working."
 ---
 
@@ -6,7 +7,7 @@ description: "Analyze-phase skill for the vibeslop product methodology. Helps na
 
 ## User Input
 
-The text the user typed after `/vibeslop.analyze` is the feature description.
+The feature description is whatever the agent's harness passed as input to this skill.
 If empty and a `.vibeslop/` directory exists, look for the most recent feature context.
 If still empty, ask the user what feature they want to analyze.
 
@@ -114,7 +115,7 @@ After all 3 stages are approved:
 
 5. **Confirm to user**: Tell the user where the artifact was written and emphasize:
 
-   > **The product cycle is now complete.** Your evidence-ranked bet list is ready. Run `/vibeslop.plan` to start the next cycle — the bet list from this Analyze will carry forward automatically.
+   > **The product cycle is now complete.** Your evidence-ranked bet list is ready. Run `vibeslop-plan` to start the next cycle — the bet list from this Analyze will carry forward automatically.
    >
    > Skipping Analyze means your next Plan phase starts cold, without evidence from this cycle. The bet list is what makes each cycle smarter than the last.
 
