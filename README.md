@@ -1,138 +1,180 @@
-# ⚡ Vibeslop
+# VIBESLOP — PRODUCT-THINKING LAYERS
 
-> *"Ship products, not features."*
+> *PITCH — SKETCH — SHIP — SCORE — LOOP.*
 
-Product delivery skills for any AI coding agent — packaged as vendor-neutral [Agent Skills](https://agentskills.io). Apply **four proven methodologies** across every phase of development. One install. Seven skills. Continuous improvement. 🔄
+Product-thinking layers around [GitHub's spec-kit](https://github.com/github/spec-kit). Spec-kit is the engineering substrate. Vibeslop is what surrounds it — bet validation upstream, launch ceremony and outcome scoring downstream. No replacement. No competition. Just the loops spec-kit doesn't run.
 
-### 🌐 [See the interactive methodology → or13.io/vibeslop](https://or13.io/vibeslop)
+Four skills. Vendor-neutral [Agent Skills](https://agentskills.io). The cycle never closes. It only loops back.
 
-## 🔄 The Cycle
+[See the methodology — or13.io/vibeslop](https://or13.io/vibeslop)
+
+---
+
+## THE CYCLE
 
 ```mermaid
 graph LR
-    P["🎯 Plan"] --> D["💎 Design"]
-    D --> B["⚡ Build"]
-    B --> T["🔮 Test"]
-    T --> R["🧬 Review"]
-    R --> L["🔥 Launch"]
-    L --> A["🌊 Analyze"]
-    A -->|next cycle| P
+    P["PITCH"] --> S["SKETCH"]
+    S --> SK["spec-kit<br/>specify · plan · tasks · implement"]
+    SK --> SH["SHIP"]
+    SH --> SC["SCORE"]
+    SC -->|next cycle| P
 
-    style P fill:#10b981,stroke:#059669,color:#fff
-    style D fill:#8b5cf6,stroke:#7c3aed,color:#fff
-    style B fill:#f59e0b,stroke:#d97706,color:#fff
-    style T fill:#3b82f6,stroke:#2563eb,color:#fff
-    style R fill:#ec4899,stroke:#db2777,color:#fff
-    style L fill:#ef4444,stroke:#dc2626,color:#fff
-    style A fill:#06b6d4,stroke:#0891b2,color:#fff
+    style P fill:#1a1a1a,stroke:#888,color:#fff
+    style S fill:#1a1a1a,stroke:#888,color:#fff
+    style SK fill:#1a1a1a,stroke:#888,color:#fff,stroke-dasharray: 5 5
+    style SH fill:#1a1a1a,stroke:#888,color:#fff
+    style SC fill:#1a1a1a,stroke:#888,color:#fff
 ```
 
-| Skill | Phase | *The Vibe* |
-|---------|-------|-----------|
-| `vibeslop-plan` | 🎯 Plan | *"Choose what's worth building next"* |
-| `vibeslop-design` | 💎 Design | *"Sketch the solution at the right altitude"* |
-| `vibeslop-build` | ⚡ Build | *"Let the team solve the problem their way"* |
-| `vibeslop-test` | 🔮 Test | *"Catch the gap between built and needed"* |
-| `vibeslop-review` | 🧬 Review | *"Face whether the work moved the needle"* |
-| `vibeslop-launch` | 🔥 Launch | *"Get the work into customers' hands"* |
-| `vibeslop-analyze` | 🌊 Analyze | *"Name what's not working"* |
+| Skill | Phase | What it asks |
+| --- | --- | --- |
+| `vibeslop.pitch` | PITCH | Is this worth building? |
+| `vibeslop.sketch` | SKETCH | What's the smallest version that earns the bet? |
+| `vibeslop.ship` | SHIP | How do we get it into customers' hands safely? |
+| `vibeslop.score` | SCORE | Did the bet pay off? |
 
-## 🚀 Install
+---
+
+## INSTALL
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/or13/vibeslop/main/install.sh | bash
 ```
 
-> 📦 **One-liner** · 🚫 **No dependencies** · 🔌 **Speckit optional**
+One-liner. No dependencies. Composes with spec-kit.
 
-Update to the latest:
+Update:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/or13/vibeslop/main/install.sh | bash -s -- --force
 ```
 
-## 🤝 Harness compatibility
+---
+
+## HARNESS COMPATIBILITY
 
 Vibeslop ships skills in the open [agentskills.io](https://agentskills.io) format — `.agents/skills/<name>/SKILL.md` per skill — alongside the [agents.md](https://agents.md) project convention.
 
 | Harness | How it picks up the skills |
-|---|---|
-| Gemini CLI | Auto-discovers `.agents/skills/` |
-| Claude Code | Reads `.claude/skills/` — installer creates a `.claude/skills` → `.agents/skills` symlink for you |
-| Any agents.md-compliant agent | Reads `.agents/skills/` directly |
+| --- | --- |
+| Gemini CLI | Auto-discovers `.agents/skills/`. |
+| Claude Code | Reads `.claude/skills/`. The installer creates a `.claude/skills` → `.agents/skills` symlink. |
+| Any agents.md-compliant agent | Reads `.agents/skills/` directly. |
 
-The installer writes to `.agents/skills/` by default, so any harness following the standard sees the same seven skills. Earlier versions of vibeslop installed Claude-Code-only files into `.claude/commands/`; re-run the installer to migrate.
-
-## 🔍 Four Lenses
-
-Every phase applies the same four methodology lenses — the agent does the work, then presents condensed findings for your review.
-
-```mermaid
-graph TD
-    F["Feature Idea"] --> L1["🎯 Jobs to Be Done"]
-    F --> L2["🔁 Hook Model"]
-    F --> L3["📐 Agile Delivery"]
-    F --> L4["🤖 Agentic SDLC"]
-    L1 --> A["Artifact → plan.md"]
-    L2 --> A
-    L3 --> A
-    L4 --> A
-
-    style F fill:#1e293b,stroke:#475569,color:#fff
-    style A fill:#10b981,stroke:#059669,color:#fff
-```
-
-🎯 **[Jobs to Be Done](https://or13.io/vibeslop#jtbd)** — Frame work around customer struggling moments, not feature lists. Score outcomes by importance × satisfaction gap.
-
-🔁 **[Hook Model](https://or13.io/vibeslop#hook-model)** — Design habit loops: trigger → action → variable reward → investment. If there's no natural hook, the skill says so.
-
-📐 **[Agile Delivery](https://or13.io/vibeslop#agile)** — Fixed time, variable scope. Every bet has an appetite and explicit cuts. No unbounded backlogs.
-
-🤖 **[Agentic SDLC](https://or13.io/vibeslop#agentic)** — When no human fills a team role, agents fill it — faster. Define tool categories and human vs. agent responsibilities.
-
-## ✨ How It Feels
-
-You invoke a skill. The agent researches your codebase, drafts all four lenses, and presents **condensed findings** — not a wall of text:
-
-```
-🎯 Plan complete for: Add user onboarding flow
-
-⚡ Agents filling reviewer + tester roles — no human bottleneck
-💎 Opportunity gap of 8 — users desperately want this but nothing exists
-⚠️ Auth integration is a security-sensitive path — needs threat modeling
-🔮 2-day appetite is tight if we include email verification
-
-Say "ok" to proceed or ask about any item.
-```
-
-The full artifact is written to `plan.md` only after you approve. Each phase builds on the last. 🌐 **[See the interactive methodology →](https://or13.io/vibeslop)**
-
-## 🚀 Self-Deploying
-
-**Launch** doesn't just write an artifact — it commits and pushes your code (with your approval). **Analyze** verifies the published state matches local. The skills practice what they preach.
-
-## 🔌 Speckit Integration
-
-Works standalone or with [speckit](https://github.com/or13/speckit) for feature directory management:
-
-- **With speckit**: Artifacts go to `plan.md` in the active feature directory
-- **Without speckit**: Artifacts go to `plan.md` in the current directory
-
-## 📋 Requirements
-
-- An AI coding agent that supports the [Agent Skills](https://agentskills.io) standard (e.g., Claude Code, Gemini CLI, or any [agents.md](https://agents.md)-compliant tool)
-- `curl` (for installation)
-
-## 🤝 Contributing
-
-PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## 📄 License
-
-Apache 2.0 — see [LICENSE](LICENSE).
+The installer writes to `.agents/skills/` by default. Earlier versions of vibeslop installed Claude-Code-only files into `.claude/commands/`; re-run the installer to migrate.
 
 ---
 
-<p align="center">
-  🌐 <a href="https://or13.io/vibeslop"><strong>or13.io/vibeslop</strong></a> · Built with vibeslop ⚡
-</p>
+## HOW IT FEELS
+
+You invoke a skill. The agent does the homework first — prior artifacts, git state, related code, available MCPs. Then it drafts a proposal for the first round and names what's weak about its own draft.
+
+```
+vibeslop.pitch — Round 1: The bet (mode: solo)
+
+PRESS RELEASE
+"Squinting at bright screens at night? Switch to dark mode in
+one tap from any screen."
+
+CUSTOMER FAQ (3 of 5)
+— Will it remember my preference? Yes, per-device.
+— Does it work on the marketing site? No — that's deferred.
+— What about images and videos? Auto-dimmed. Flag if wrong.
+
+COST OF INACTION
+Support tickets show ~12/week mention eye strain. Six months
+→ ~300 tickets, plus the SEO hit from competitors shipping
+first.
+
+MY OWN SOFT SPOTS
+— The 12/week number is a sample, not the full ticket data.
+  Pull from HubSpot? (~3 min)
+— "Auto-dimmed images" is a guess at scope. Cagan's feasibility
+  risk is where I'm thinnest.
+
+Push on any of those. Approve as-is. Or pass.
+```
+
+Approve, refine, pass. Soft spots you pass on land in the artifact under "Open soft spots" — visible to the next phase, not silenced. The artifact is written when all rounds are done.
+
+---
+
+## PRINCIPLES
+
+The skills share six assumptions. Knowing them upfront tells you what to expect — and what *not* to expect.
+
+**01 — GRADIENT, NOT GATE.** The skill produces an artifact at whatever level of engagement you bring. Engagement makes it sharper. The skill never refuses to write because the thinking is thin. Unresolved items ship in the artifact under "Open soft spots" — visible, not hidden.
+
+**02 — FRAMEWORKS NAMED, NOT PARAPHRASED.** When a framework would sharpen the current draft — Cagan's four risks, B=MAT, the Hook Model, Shape Up appetites, Secure Coding from the threat model, others (the library grows) — the skill calls it out by name. Engaging is rewarded inline. Passing is recorded as a soft spot. Never forced.
+
+**03 — HOMEWORK FIRST.** Each skill front-loads research — prior artifacts, git state, related code, available MCPs — before asking you anything. You land on a grounded proposal, not an empty prompt.
+
+**04 — SELF-CRITICISM INLINE.** Proposals name their own weak spots. *"I drafted X, but I'm guessing about Y — want to push on it?"* You react to specific soft spots, not generic open questions.
+
+**05 — SOLO AND TEAM BOTH WORK.** Each skill detects mode (`CODEOWNERS`, committer diversity in `git log`) and adapts. In solo mode, the agent fills the missing engineering roles — writes code, runs commands, builds the critical path. In team mode, the agent produces planning artifacts the team executes.
+
+**06 — ITERATION COMPOUNDS, THEN GETS COMMITTED.** Re-running a phase updates the artifact in place. Git tracks the evolution. Your second run is smarter than your first because the prior commit is one `git log` away. Uncommitted changes get overwritten on the next run — each skill nudges you once. No nagging.
+
+---
+
+## THE TOOLBOX
+
+The skills aren't a methodology with a fixed framework count. They're a peer thinking partner that draws on a growing library — Working Backwards, Cagan's four risks, JTBD, B=MAT, Fogg's six simplicity factors, the Hook Model, Shape Up appetites, Secure Coding, more — and reaches for whichever sharpens the current draft.
+
+The toolbox grows over time. PRs adding frameworks (with citations) welcome.
+
+---
+
+## SELF-DEPLOYING
+
+`vibeslop.ship` doesn't just write an artifact — it commits and pushes your code, with your approval. `vibeslop.score` reads the deployed state to verify what shipped matches what's live. The skills practice what they preach.
+
+---
+
+## PLAYS WITH SPEC-KIT
+
+Vibeslop composes with [GitHub's spec-kit](https://github.com/github/spec-kit). Spec-kit handles the engineering substrate — constitution, spec, plan, tasks, implement. Vibeslop handles the product-thinking layers spec-kit doesn't have.
+
+— **UPSTREAM.** `vibeslop.pitch` decides if a feature is worth a spec at all. `vibeslop.sketch` adds behavioral discipline (B=MAT, Fogg's simplicity factors, prototype-as-discovery) before `/speckit.specify` runs.
+
+— **DOWNSTREAM.** `vibeslop.ship` handles launch ceremony — struggling-moment messaging, day-one Hook cycle, canary rollout, rollback tripwires. `vibeslop.score` does post-launch outcome analysis and produces the evidence-ranked bet list for the next cycle.
+
+— **STANDALONE.** Vibeslop works without spec-kit. Skills detect `.specify/` and adapt — falling back to `.vibeslop/<feature>/` artifacts when spec-kit isn't installed.
+
+The full flow:
+
+```
+vibeslop.pitch  →  vibeslop.sketch  →  /speckit.specify  →  /speckit.plan
+                                       /speckit.tasks    →  /speckit.implement
+                                                          →  vibeslop.ship
+                                                          →  vibeslop.score
+                                                          →  (next vibeslop.pitch)
+```
+
+---
+
+## REQUIREMENTS
+
+— An AI coding agent that supports the [Agent Skills](https://agentskills.io) standard. Claude Code, Gemini CLI, any [agents.md](https://agents.md)-compliant tool.
+— `curl`, for installation.
+
+---
+
+## CONTRIBUTING
+
+PRs welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
+## LICENSE
+
+Apache 2.0. See [LICENSE](LICENSE).
+
+---
+
+<p align="center"><img src="assets/landfill.gif" alt="Landfill" width="480"></p>
+
+<p align="center"><em>Landfill — where consumption ends. The machine pushes forward through what we discarded.</em></p>
+
+<p align="center"><a href="https://or13.io/vibeslop"><strong>or13.io/vibeslop</strong></a></p>
