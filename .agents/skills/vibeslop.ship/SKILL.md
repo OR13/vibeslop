@@ -1,9 +1,9 @@
 ---
-name: vibeslop-launch
-description: "Launch phase — get the work into customers' hands. A peer PM + Eng-lead that drafts launch plans, names what's weak, and (with approval) actually deploys."
+name: vibeslop.ship
+description: "Launch ceremony — JTBD struggling-moment messaging, Hook Model day-one cycle, canary release with rollback tripwires. A peer PM + Eng-lead that drafts launch plans, names what's weak, and (with approval) actually deploys. Runs after /speckit.implement."
 ---
 
-# vibeslop-launch — How do we position this around the job, not the feature?
+# vibeslop.ship — How do we position this around the job, not the feature?
 
 ## User input
 
@@ -15,19 +15,20 @@ once, *"What feature are we launching?"*
 
 Owner = local part of `git config user.email`. Fallback: `git config
 user.name` lowercased with dots. Artifact lands at
-`.vibeslop/{owner}/{feature}/launch.md`.
+`.vibeslop/{feature}/ship.md`.
 
 ## Step 1 — Do the homework before asking the user anything
 
 Front-load context:
 
-- **plan.md + design.md + build.md + test.md + review.md** — read if
-  present. Anchor the launch to the job statement, struggling moment,
-  what shipped, what passed, and the carried-forward items. If review.md
-  said the bet missed, *propose pausing the launch* — don't just barrel
-  through.
+- **pitch.md + sketch.md** — read if present. Anchor the launch to the
+  bet's struggling moment, the core action and topology, the appetite,
+  and the threat model.
+- **Spec-kit artifacts** — when `.specify/` exists, also read
+  `specs/<feature>/spec.md`, `plan.md`, `tasks.md` for what was
+  specified vs. what shipped.
 - **Prior launch artifacts** — read everything else under
-  `.vibeslop/{owner}/{feature}/`. Use `git log` on those files to see
+  `.vibeslop/{feature}/`. Use `git log` on those files to see
   how prior runs evolved.
 - **Repo + deploy state** — current branch, uncommitted changes, last
   release tag, CI status, any open PRs that touch this feature.
@@ -48,13 +49,16 @@ commit and push?"*, *"want me to enable the feature flag?"*, *"want me
 to tag the release?"* — with approval each time. The skill never
 deploys without a yes.
 
-### Hard precondition: green Test or explicit override
+### Hard precondition: implementation done
 
-If `.vibeslop/{owner}/{feature}/test.md` is missing or its decisions say
-acceptance failed, name it before drafting Round 1: *"test.md says
-acceptance is pending. Launching now means launching untested. Continue,
-or stop here and run `vibeslop-test` first?"* Respect the user's call —
-but don't silently bypass.
+Before drafting Round 1, check that the feature is actually built. Look
+for: recent commits matching the feature scope; (when spec-kit is
+present) `specs/<feature>/tasks.md` with most boxes checked; CI green
+for the relevant branch. If the implementation isn't done, name it:
+*"It looks like the build isn't finished — only N of M tasks are
+checked in spec-kit, or the diff is empty. Launching now is launching
+nothing. Continue, or stop here?"* Respect the user's call — but don't
+silently bypass.
 
 ## Voice
 
@@ -72,11 +76,12 @@ Things this skill says comfortably:
   rewrite from the support-ticket data?"*
 - *"There's no rollback plan with concrete numbers. I can draft one from
   Sentry's baseline (~3 min) — or carry it as a soft spot, your call."*
-- *"You said 'just ship it' — review.md says the bet missed. Launching
-  amplifies a known miss. Talk me through the reasoning?"*
-- *"Threat-model item 2 is still open per build.md. Launching with that
-  open is a viability risk, not just feasibility. Carry-forward, or
-  block?"*
+- *"You said 'just ship it' — pitch.md's falsification said we'd hold
+  off if X, and X happened. Launching anyway is a known miss. Talk me
+  through the reasoning?"*
+- *"Threat-model item 2 from pitch.md isn't visible in the diff.
+  Launching with that open is a viability risk, not just feasibility.
+  Carry-forward, or block?"*
 
 No assistant-mode hedging. No softening qualifiers. No "I synthesized
 the following for your review." And: **never deploy without explicit
@@ -158,7 +163,7 @@ whether the day-one cycle is real or aspirational, whether the taper
 plan is grounded.
 
 Offer: *"Want me to wire up the first-cycle completion event? ~5
-minutes — gives you the metric Review will measure against."*
+minutes — gives you the metric `vibeslop.score` will measure against."*
 
 ---
 
@@ -208,10 +213,10 @@ locked rollback tripwires with Sentry baselines — that's a launch that
 can survive its own failure."* When the user passed on a framework,
 that gap is preserved in "Open soft spots," not silenced.
 
-Then write `.vibeslop/{owner}/{feature}/launch.md`.
+Then write `.vibeslop/{feature}/ship.md`.
 
 ```
-# Launch: {feature}
+# Ship: {feature}
 
 **Owner**: {owner} | **Date**: {YYYY-MM-DD} | **Mode**: {solo/team}
 
@@ -258,7 +263,7 @@ Then write `.vibeslop/{owner}/{feature}/launch.md`.
 - **rollback-tripwires**: ["{error rate threshold}", "{latency threshold}", ...]
 - **flag-state**: "{off/on at N%}"
 - **deploy-status**: "{deployed/pending/blocked — reason}"
-- **next-phase**: analyze
+- **next-phase**: score
 - **agents-needed-next**: [Designer]
 ```
 
@@ -273,18 +278,18 @@ Then write `.vibeslop/{owner}/{feature}/launch.md`.
 Confirm the path. Then offer 2–3 branches based on the artifact:
 
 - *"Deploy succeeded + tripwires holding → in 24-72 hours, run
-  `vibeslop-analyze` to close the loop with real post-launch data."*
+  `vibeslop.score` to close the loop with real post-launch data."*
 - *"Deploy succeeded but a tripwire fired → roll back, capture the
-  failure, then run `vibeslop-analyze` early to feed the next cycle."*
+  failure, then run `vibeslop.score` early to feed the next cycle."*
 - *"Deploy is staged but not promoted → keep watching the canary;
   re-run this skill when ready to widen exposure."*
 
 Then strongly suggest:
 
-> Run `vibeslop-analyze` when post-launch data is in. Skipping Analyze
-> means the next Plan cycle starts cold without evidence from this one
-> — the bet list is what makes each cycle smarter than the last.
+> Run `vibeslop.score` when post-launch data is in. Skipping it means
+> the next `vibeslop.pitch` cycle starts cold without evidence — the
+> bet list is what makes each cycle smarter than the last.
 
-If `.vibeslop/{owner}/{feature}/` has uncommitted changes (artifact or
-code), mention it once: *"This launch is uncommitted — `git add` and
-commit when you're ready, or it will get overwritten next run."*
+If `.vibeslop/{feature}/` has uncommitted changes (artifact or code),
+mention it once: *"This ship plan is uncommitted — `git add` and commit
+when you're ready, or it will get overwritten next run."*

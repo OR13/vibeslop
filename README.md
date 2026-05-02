@@ -1,8 +1,8 @@
 # ⚡ Vibeslop
 
-> *"Ship products, not features."*
+> *"Pitch the bet, sketch the experience, ship it safely, score the outcome."*
 
-Product delivery skills for any AI coding agent — packaged as vendor-neutral [Agent Skills](https://agentskills.io). Apply **four proven methodologies** across every phase of development. One install. Seven skills. Continuous improvement. 🔄
+Product-thinking layers around [GitHub's spec-kit](https://github.com/github/spec-kit). Spec-kit handles the engineering substrate (constitution, spec, plan, tasks, implement); vibeslop handles the product-thinking layers spec-kit doesn't have — bet validation upstream, launch and score downstream. Packaged as vendor-neutral [Agent Skills](https://agentskills.io). Four skills. Continuous improvement. 🔄
 
 ### 🌐 [See the interactive methodology → or13.io/vibeslop](https://or13.io/vibeslop)
 
@@ -10,32 +10,25 @@ Product delivery skills for any AI coding agent — packaged as vendor-neutral [
 
 ```mermaid
 graph LR
-    P["🎯 Plan"] --> D["💎 Design"]
-    D --> B["⚡ Build"]
-    B --> T["🔮 Test"]
-    T --> R["🧬 Review"]
-    R --> L["🔥 Launch"]
-    L --> A["🌊 Analyze"]
-    A -->|next cycle| P
+    P["🎯 Pitch"] --> S["💎 Sketch"]
+    S --> SK["📋 spec-kit<br/>(specify → plan → tasks → implement)"]
+    SK --> SH["🔥 Ship"]
+    SH --> SC["🌊 Score"]
+    SC -->|next cycle| P
 
     style P fill:#10b981,stroke:#059669,color:#fff
-    style D fill:#8b5cf6,stroke:#7c3aed,color:#fff
-    style B fill:#f59e0b,stroke:#d97706,color:#fff
-    style T fill:#3b82f6,stroke:#2563eb,color:#fff
-    style R fill:#ec4899,stroke:#db2777,color:#fff
-    style L fill:#ef4444,stroke:#dc2626,color:#fff
-    style A fill:#06b6d4,stroke:#0891b2,color:#fff
+    style S fill:#8b5cf6,stroke:#7c3aed,color:#fff
+    style SK fill:#1e293b,stroke:#475569,color:#fff
+    style SH fill:#ef4444,stroke:#dc2626,color:#fff
+    style SC fill:#06b6d4,stroke:#0891b2,color:#fff
 ```
 
 | Skill | Phase | *The Vibe* |
-|---------|-------|-----------|
-| `vibeslop-plan` | 🎯 Plan | *"Choose what's worth building next"* |
-| `vibeslop-design` | 💎 Design | *"Sketch the solution at the right altitude"* |
-| `vibeslop-build` | ⚡ Build | *"Let the team solve the problem their way"* |
-| `vibeslop-test` | 🔮 Test | *"Catch the gap between built and needed"* |
-| `vibeslop-review` | 🧬 Review | *"Face whether the work moved the needle"* |
-| `vibeslop-launch` | 🔥 Launch | *"Get the work into customers' hands"* |
-| `vibeslop-analyze` | 🌊 Analyze | *"Name what's not working"* |
+|-------|-------|-----------|
+| `vibeslop.pitch` | 🎯 Pitch | *"Is this worth building?"* |
+| `vibeslop.sketch` | 💎 Sketch | *"Smallest version that earns the bet"* |
+| `vibeslop.ship` | 🔥 Ship | *"Get it into customers' hands safely"* |
+| `vibeslop.score` | 🌊 Score | *"Did the bet pay off?"* |
 
 ## 🚀 Install
 
@@ -43,7 +36,7 @@ graph LR
 curl -fsSL https://raw.githubusercontent.com/or13/vibeslop/main/install.sh | bash
 ```
 
-> 📦 **One-liner** · 🚫 **No dependencies** · 🔌 **Speckit optional**
+> 📦 **One-liner** · 🚫 **No dependencies** · 🔌 **Composes with spec-kit**
 
 Update to the latest:
 
@@ -61,14 +54,14 @@ Vibeslop ships skills in the open [agentskills.io](https://agentskills.io) forma
 | Claude Code | Reads `.claude/skills/` — installer creates a `.claude/skills` → `.agents/skills` symlink for you |
 | Any agents.md-compliant agent | Reads `.agents/skills/` directly |
 
-The installer writes to `.agents/skills/` by default, so any harness following the standard sees the same seven skills. Earlier versions of vibeslop installed Claude-Code-only files into `.claude/commands/`; re-run the installer to migrate.
+The installer writes to `.agents/skills/` by default, so any harness following the standard sees the same four skills. Earlier versions of vibeslop installed Claude-Code-only files into `.claude/commands/`; re-run the installer to migrate.
 
 ## ✨ How It Feels
 
 You invoke a skill. The agent researches your codebase, drafts a proposal for the first round, and **names what's weak about its own draft**:
 
 ```
-🎯 Plan — Round 1: The bet (mode: solo)
+🎯 vibeslop.pitch — Round 1: The bet (mode: solo)
 
 📰 Press release: "Squinting at bright screens at night? Switch to dark
    mode in one tap from any screen."
@@ -115,14 +108,25 @@ The skills aren't a methodology with a fixed framework count. They're a peer thi
 
 ## 🚀 Self-Deploying
 
-**Launch** doesn't just write an artifact — it commits and pushes your code (with your approval). **Analyze** verifies the published state matches local. The skills practice what they preach.
+**Ship** doesn't just write an artifact — it commits and pushes your code (with your approval). **Score** reads the deployed state to verify what shipped matches what's live. The skills practice what they preach.
 
-## 🔌 Speckit Integration
+## 🔌 Plays with spec-kit
 
-Works standalone or with [speckit](https://github.com/or13/speckit) for feature directory management:
+Vibeslop is designed to compose with [GitHub's spec-kit](https://github.com/github/spec-kit). Spec-kit handles the engineering substrate (constitution, spec, plan, tasks, implement); vibeslop handles the product-thinking layers spec-kit doesn't have:
 
-- **With speckit**: Artifacts go to `plan.md` in the active feature directory
-- **Without speckit**: Artifacts go to `plan.md` in the current directory
+- **Upstream**: `vibeslop.pitch` decides if a feature is worth a spec at all. `vibeslop.sketch` adds behavioral discipline (B=MAT, Fogg's simplicity factors, prototype-as-discovery) before `/speckit.specify` runs.
+- **Downstream**: `vibeslop.ship` handles launch ceremony (struggling-moment messaging, day-one Hook cycle, canary rollout, rollback tripwires). `vibeslop.score` does post-launch outcome analysis and produces the evidence-ranked bet list for the next cycle.
+- **Standalone**: vibeslop works without spec-kit too. Skills detect `.specify/` and adapt — falling back to `.vibeslop/<feature>/` artifacts when spec-kit isn't installed.
+
+The full flow:
+
+```
+vibeslop.pitch  →  vibeslop.sketch  →  /speckit.specify  →  /speckit.plan
+                                       /speckit.tasks    →  /speckit.implement
+                                                          →  vibeslop.ship
+                                                          →  vibeslop.score
+                                                          →  (next vibeslop.pitch)
+```
 
 ## 📋 Requirements
 

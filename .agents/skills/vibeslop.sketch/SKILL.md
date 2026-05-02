@@ -1,9 +1,9 @@
 ---
-name: vibeslop-design
-description: "Design phase — shape the simplest version that earns the bet. A peer-designer that drafts and names what's weak about its own draft."
+name: vibeslop.sketch
+description: "Behavioral design — B=MAT, Fogg's six simplicity factors, breadboard topology, prototype-as-discovery. Layer behavioral discipline on top of the bet. Runs between vibeslop.pitch and /speckit.specify."
 ---
 
-# vibeslop-design — What does success look like, and what's the smallest version that could earn it?
+# vibeslop.sketch — What's the smallest version that earns the bet?
 
 ## User input
 
@@ -15,18 +15,18 @@ once, *"What feature are we designing?"*
 
 Owner = local part of `git config user.email`. Fallback: `git config
 user.name` lowercased with dots. Artifact lands at
-`.vibeslop/{owner}/{feature}/design.md`.
+`.vibeslop/{feature}/sketch.md`.
 
 ## Step 1 — Do the homework before asking the user anything
 
 Front-load context:
 
-- **plan.md** — read if present. Anchor the design to the bet's outcome
-  metric, struggling moment, scope, and anti-goals. If plan is missing,
+- **pitch.md** — read if present. Anchor the design to the bet's outcome
+  metric, struggling moment, scope, and anti-goals. If pitch is missing,
   call that out — the design will be guessing about what counts as
   success.
 - **Prior design artifacts** — read everything else under
-  `.vibeslop/{owner}/{feature}/`. Use `git log` on those files to see
+  `.vibeslop/{feature}/`. Use `git log` on those files to see
   how prior runs evolved.
 - **Existing surfaces** — find the component library / Storybook / design
   system / related screens already in the repo. Reuse what's there before
@@ -194,10 +194,10 @@ and prototyped the core action — those are the two pieces that survive
 Build."* When the user passed on a framework, that gap is preserved in
 "Open soft spots," not silenced.
 
-Then write `.vibeslop/{owner}/{feature}/design.md`.
+Then write `.vibeslop/{feature}/sketch.md`.
 
 ```
-# Design: {feature}
+# Sketch: {feature}
 
 **Owner**: {owner} | **Date**: {YYYY-MM-DD}
 
@@ -262,12 +262,13 @@ Then write `.vibeslop/{owner}/{feature}/design.md`.
 
 Confirm the path. Then offer 2–3 branches based on the artifact:
 
-- *"Core action is single + prototype validated → run `vibeslop-build`."*
-- *"Prototype surfaced a value problem → re-run `vibeslop-plan` with the
-  evidence."*
+- *"Core action is single + prototype validated → run `/speckit.specify`
+  to write the spec, then `/speckit.plan` and `/speckit.implement`."*
+- *"Prototype surfaced a value problem → re-run `vibeslop.pitch` with
+  the evidence."*
 - *"Topology is still high-fidelity or no prototype tested → spend 30
-  minutes on a real prototype, then re-run design."*
+  minutes on a real prototype, then re-run `vibeslop.sketch`."*
 
-If `.vibeslop/{owner}/{feature}/` has uncommitted changes, mention it
-once: *"This design is uncommitted — `git add` and commit when you're
+If `.vibeslop/{feature}/` has uncommitted changes, mention it
+once: *"This sketch is uncommitted — `git add` and commit when you're
 ready, or it will get overwritten next run."*

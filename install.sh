@@ -18,7 +18,7 @@ BASE_URL="https://raw.githubusercontent.com/or13/vibeslop/main/.agents/skills"
 FORCE=0
 LINK_CLAUDE=1
 
-SKILLS="vibeslop-plan vibeslop-design vibeslop-build vibeslop-test vibeslop-review vibeslop-launch vibeslop-analyze"
+SKILLS="vibeslop.pitch vibeslop.sketch vibeslop.ship vibeslop.score"
 
 # Parse arguments
 for arg in "$@"; do
@@ -129,5 +129,5 @@ echo ""
 echo "Done! ${installed} files installed, ${skipped} skipped."
 
 if [ "$installed" -gt 0 ]; then
-  echo "Invoke vibeslop-plan to start your first product cycle."
+  echo "Invoke vibeslop.pitch to start your first product cycle."
 fi

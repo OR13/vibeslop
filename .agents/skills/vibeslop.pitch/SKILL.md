@@ -1,9 +1,9 @@
 ---
-name: vibeslop-plan
-description: "Plan phase — choose what's worth doing. A peer-PM thinking partner that does its homework before asking you to do yours."
+name: vibeslop.pitch
+description: "Bet validation — PR-FAQ, Cagan's risks, falsification, appetite. Decide if a feature is worth building before writing the spec. Runs upstream of /speckit.specify."
 ---
 
-# vibeslop-plan — What problem are we solving and is it worth it?
+# vibeslop.pitch — Is this worth building?
 
 ## User input
 
@@ -14,15 +14,15 @@ once, *"What feature are we thinking about?"*
 ## Owner + path
 
 Owner = local part of `git config user.email`. Fallback: `git config user.name`
-lowercased with dots. Artifact lands at `.vibeslop/{owner}/{feature}/plan.md`.
+lowercased with dots. Artifact lands at `.vibeslop/{feature}/pitch.md`.
 
 ## Step 1 — Do the homework before asking the user anything
 
 Front-load context. The user should land on a grounded proposal, not an empty
 prompt. Pull what's cheaply available:
 
-- **Prior artifacts** — read everything under `.vibeslop/{owner}/{feature}/`
-  if it exists. Use `git log -- .vibeslop/{owner}/{feature}/` to see how
+- **Prior artifacts** — read everything under `.vibeslop/{feature}/`
+  if it exists. Use `git log -- .vibeslop/{feature}/` to see how
   prior runs evolved.
 - **Git** — last ~20 commits on this branch and on main; current diff if any.
 - **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
@@ -146,11 +146,11 @@ claim and a real cost-of-inaction — those are the two pieces that survive
 review."* Not flattery; an honest read of where the artifact is solid vs.
 where gaps remain.
 
-Then write `.vibeslop/{owner}/{feature}/plan.md`. The artifact carries the
+Then write `.vibeslop/{feature}/pitch.md`. The artifact carries the
 soft spots forward visibly — see template — rather than hiding them.
 
 ```
-# Plan: {feature}
+# Pitch: {feature}
 
 **Owner**: {owner} | **Date**: {YYYY-MM-DD}
 
@@ -207,12 +207,14 @@ soft spots forward visibly — see template — rather than hiding them.
 
 Confirm the path. Then offer 2–3 branches based on the artifact:
 
-- *"Confidence ≥ 3 and risks have evidence → run `vibeslop-design`."*
-- *"Falsification names a cheap test → run that test, then re-plan."*
+- *"Confidence ≥ 3 and risks have evidence → run `vibeslop.sketch` to
+  design the experience, then `/speckit.specify` when ready."*
+- *"Skip behavioral design → straight to `/speckit.specify`."*
+- *"Falsification names a cheap test → run it, then re-run
+  `vibeslop.pitch`."*
 - *"Press release is boring or cost of inaction is 'nothing' → kill the
-  bet, write the reasoning to `.vibeslop/{owner}/{feature}/killed.md`,
-  stop."*
+  bet, write the reasoning to `.vibeslop/{feature}/killed.md`, stop."*
 
-If `.vibeslop/{owner}/{feature}/` has uncommitted changes, mention it once:
-*"This plan is uncommitted — `git add` and commit when you're ready, or it
+If `.vibeslop/{feature}/` has uncommitted changes, mention it once:
+*"This pitch is uncommitted — `git add` and commit when you're ready, or it
 will get overwritten next run."*
