@@ -26,9 +26,12 @@ job-switching, and a ranked bet list handed back to the next pitch.
 
 Front-load context:
 
-- **All prior artifacts** — `pitch.md`, `sketch.md`, `ship.md`. Read
-  every one. This phase closes the loop, so every prior artifact is
-  valuable context for re-scoring outcomes and diagnosing drop-off.
+- **All prior artifacts** — `pitch.md`, `sketch.md`, `ship.md`,
+  `personas.md` (if present). Read every one. This phase closes the
+  loop, so every prior artifact is valuable context for re-scoring
+  outcomes and diagnosing drop-off. The personas are the segments
+  this phase scores against — generic aggregate scoring hides the
+  signal that personas surface.
 - **Spec-kit artifacts** — when `.specify/` exists, also read
   `specs/<feature>/spec.md`, `plan.md`, `tasks.md` for what was
   specified vs. what shipped.
@@ -96,7 +99,8 @@ Google's HEART framework, System Usability Scale (SUS), demo walkthrough,
 Hook Model habit threshold + drop-off diagnosis + channel ranking,
 Start/Stop/Continue retrospective, blameless post-mortem RCA with Five
 Whys, churn analysis as "what did they hire instead", evidence-ranked
-bet list for the next pitch) are named in the proposal, not paraphrased. When a framework would sharpen the draft, the offer
+bet list for the next pitch, **per-persona scoring** with persona
+refresh) are named in the proposal, not paraphrased. When a framework would sharpen the draft, the offer
 names it: *"Churn analysis isn't done. Want me to interview the three
 churned accounts CS flagged, or pull their session-end events from
 analytics? ~10 minutes."* When the user engages, Step 3 credits the
@@ -117,14 +121,21 @@ gives back, move on. Approve, refine, or pass — all three are valid.
 
 **Round 1 — Did the bet pay off?**
 
-Draft progress against the original bet (not the spec).
+Draft progress against the original bet (not the spec). **Score against
+the primary persona first, then the secondaries** — aggregate scoring
+hides the signal that segmenting by persona surfaces. A bet that
+"works" in aggregate but missed for the primary persona missed.
 
 - **Bet check** — pull from pitch.md verbatim. Measure against *that*,
   not against what got built.
-- **Importance × satisfaction re-score** — for each targeted outcome,
-  compare pre-launch vs post-launch. The gap tells the truth.
+- **Importance × satisfaction re-score (per persona)** — for each
+  targeted outcome, compare pre-launch vs post-launch *for the primary
+  persona*, then for each secondary. The gap tells the truth, and the
+  *delta between persona segments* often tells more truth than the
+  aggregate.
 - **Gap movement** — narrowed (bet paid off), remained (bet missed),
-  emerged (unintended consequence). All three matter.
+  emerged (unintended consequence). All three matter, all three should
+  be tagged with which persona they apply to.
 - **Time-to-value vs target** — if instrumentation is live, pull real
   numbers. If not, name the uncertainty.
 - **Switching behavior** — did customers stop using their old
@@ -142,6 +153,9 @@ narrow:
   with Goals → Signals → Metrics. Use when the bet covers a whole
   surface, not a single outcome. The G-S-M structure forces the
   "what would change tell us this is true?" question for each axis.
+  **Run HEART by persona segment when data permits** — Sarah's
+  Happiness curve and Maya's Happiness curve diverging is a finding;
+  averaging them hides it.
 - **System Usability Scale (SUS)** (Brooke 1996) — 10-question
   Likert survey, scored 0–100. The standard usability number with
   decades of comparative data. Use when usability was a named risk
@@ -216,12 +230,21 @@ Draft retro + bet list for the next pitch.
   tells you what to build.
 - **Evidence-ranked bet list for the next pitch** — this is the
   closing artifact. Each bet: rank, statement, evidence, confidence
-  (High / Medium / Low). High requires ≥2 independent sources.
+  (High / Medium / Low), **and which persona it helps**. Naming the
+  persona on each bet keeps the next pitch from drifting away from the
+  audience this cycle was supposed to serve. High requires ≥2
+  independent sources.
+- **Persona refresh decision** — does the primary persona still match
+  the post-launch behavior? When real users diverge from the persona's
+  goals or context, refresh the persona before the next pitch — that's
+  often the most important output of score. Name the refresh trigger
+  even when the answer is "still valid."
 
 Name your own weak spots: which retro item is theater, which bet
 scorecard claim is unsupported, which churn diagnosis is a hypothesis
 vs. finding, where the bet list confidence is doing more work than the
-evidence.
+evidence, whether the persona is still grounded in current behavior or
+quietly drifting into theater.
 
 Offer: *"Want me to interview the three churned accounts CS flagged?
 ~30 minutes — produces the strongest churn evidence."* or *"Want me to
@@ -250,10 +273,12 @@ Then write `.vibeslop/{feature}/score.md`.
 ## Did the bet pay off?
 
 - **Bet (from pitch.md):** ...
-- **Importance × satisfaction re-score:** ...
-- **HEART (if used):** _Happiness · Engagement · Adoption · Retention · Task success — with Goals → Signals → Metrics_
+- **Importance × satisfaction re-score (per persona):**
+  - *Primary ({Name}):* importance ?/5 → ?/5 · satisfaction ?/5 → ?/5
+  - *Secondary ({Name}):* importance ?/5 → ?/5 · satisfaction ?/5 → ?/5
+- **HEART (if used):** _Happiness · Engagement · Adoption · Retention · Task success — with Goals → Signals → Metrics, segmented by persona where data permits_
 - **SUS (if used):** _score 0–100, n=__
-- **Gap movement (narrowed / remained / emerged):** ...
+- **Gap movement (narrowed / remained / emerged):** _(tag with persona)_
 - **Time-to-value vs target:** ...
 - **Switching behavior:** ...
 - **End-to-end demo walk:** ... _(dead ends if any)_
@@ -279,11 +304,17 @@ Then write `.vibeslop/{feature}/score.md`.
 
 ## Bet list for next vibeslop.pitch
 
-| Rank | Bet | Evidence | Confidence (H/M/L) |
-|------|-----|----------|--------------------|
-|    1 | ... | ...      | ...                |
-|    2 | ... | ...      | ...                |
-|    3 | ... | ...      | ...                |
+| Rank | Bet | Helps persona | Evidence | Confidence (H/M/L) |
+|------|-----|---------------|----------|--------------------|
+|    1 | ... | ...           | ...      | ...                |
+|    2 | ... | ...           | ...      | ...                |
+|    3 | ... | ...           | ...      | ...                |
+
+## Persona refresh
+
+- **Still valid?** {yes / refresh recommended — why}
+- **What changed in observed behavior:** ...
+- **Refresh trigger for next time:** ...
 
 ## Open soft spots
 
