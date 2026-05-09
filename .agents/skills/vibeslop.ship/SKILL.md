@@ -19,6 +19,10 @@ user.name` lowercased with dots. Artifact lands at
 
 ## Step 1 — Do the homework before asking the user anything
 
+This is the diverging half of the second **Double Diamond** — getting the
+built thing out into the market where signal lives. Ship covers Design
+Council's *Deliver*: real users, real channels, real noise.
+
 Front-load context:
 
 - **pitch.md + sketch.md** — read if present. Anchor the launch to the

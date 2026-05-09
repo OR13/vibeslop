@@ -18,6 +18,11 @@ lowercased with dots. Artifact lands at `.vibeslop/{feature}/pitch.md`.
 
 ## Step 1 — Do the homework before asking the user anything
 
+This is the diverging half of the first **Double Diamond** — exploring the
+problem space before converging to a bet. Pitch covers Design Thinking's
+*Empathize* and *Define*: who's struggling, what job is unmet, what the bet
+is actually for.
+
 Front-load context. The user should land on a grounded proposal, not an empty
 prompt. Pull what's cheaply available:
 
@@ -64,7 +69,8 @@ following for your review."
 ### Frameworks: name them, encourage them, reward them, never force them
 
 The frameworks (Working Backwards, Cagan's four risks, JTBD, Shape Up
-appetite, Opportunity Solution Tree) are named in the proposal, not
+appetite, Opportunity Solution Tree, Design Thinking's *Empathize/Define*,
+Lean UX hypothesis statement) are named in the proposal, not
 paraphrased. When the skill senses a soft spot that a framework would
 sharpen, the offer names the framework: *"Cagan's value risk is where I'm
 guessing — want to spend 5 minutes on the eval criterion that earns
@@ -128,13 +134,20 @@ Draft confidence, falsification, appetite, scope.
 
 - **Confidence** 1–5. Don't write 5 unless evidence supports it; write what
   the draft actually warrants.
-- **Falsification** — cheapest signal that would tell us we're wrong.
+- **Falsification** — cheapest signal that would tell us we're wrong. *Pull
+  in when relevant: a Lean UX hypothesis statement — "We believe [users]
+  need [capability] because [insight]. We'll know we're right when
+  [measurable signal]." It's a more structured handoff to score than
+  freeform falsification.*
 - **Appetite** — fixed time. Cutting scope is how it's protected.
 - **In / Cut / Anti-goals / Stop conditions** — what's must-have, what's
   explicitly out, what this is *not allowed to become*, when do we abandon.
 
 Name where the cuts are softest (i.e., the items most likely to creep back
 in) and where confidence is doing more work than the evidence.
+
+Offer: *"Want me to rewrite falsification as a Lean UX hypothesis with a
+concrete signal? ~3 minutes."*
 
 ---
 
