@@ -19,6 +19,12 @@ user.name` lowercased with dots. Artifact lands at
 
 ## Step 1 — Do the homework before asking the user anything
 
+This is the converging half of the first **Double Diamond** — narrowing the
+problem space to the smallest thing that earns the bet. Sketch covers
+Design Thinking's *Ideate*, *Prototype*, and *Test*: generate options,
+build the cheapest version that exercises the core action, and learn from
+contact with a real user.
+
 Front-load context:
 
 - **pitch.md** — read if present. Anchor the design to the bet's outcome
@@ -69,8 +75,9 @@ following for your review."
 ### Frameworks: name them, encourage them, reward them, never force them
 
 The frameworks (B=MAT, Fogg's six simplicity factors, breadboarding +
-fat-marker sketches, Hook Model, Service blueprint, Story map) are named
-in the proposal, not paraphrased. When the skill senses a soft spot that
+fat-marker sketches, Hook Model, Service blueprint, Story map, Design
+Thinking's *Ideate/Prototype/Test*, Design Sprint, Wizard of Oz, RITE)
+are named in the proposal, not paraphrased. When the skill senses a soft spot that
 a framework would sharpen, the offer names the framework: *"B=MAT is
 where I have the most guesswork — the Trigger is a placeholder. Want to
 spend 3 minutes tightening it?"* When the user engages, Step 3 credits
@@ -133,6 +140,15 @@ Draft the simplicity audit + topology.
   - **Affordances** — buttons, fields, gestures available in each place
   - **Connections** — transitions between places (what triggers each)
 
+  Two named alternatives when the work doesn't fit a flat topology:
+  - **Patton's Story map** when the work is journey-heavy. The user's
+    narrative becomes the spine; activities sit underneath at varying
+    detail. Releases slice horizontally across the spine.
+  - **Service blueprint (Shostack)** when the work crosses touchpoints
+    or has hidden support processes. Layers: customer actions → onstage
+    → backstage → support processes → physical evidence. Naming the
+    backstage layer surfaces work the topology hides.
+
 Keep it fat-marker, not pixel-perfect. If you find yourself reasoning
 about spacing, you're designing too early — call it out.
 
@@ -143,10 +159,14 @@ as named places)?*
 Name your own weak spots: which simplicity factor you're least sure
 about, whether the topology is genuinely fat-marker or sneaking into
 pixel-land, whether failure UX is named places or hidden as "edge
-cases."
+cases," whether a Story map or Service blueprint would expose
+something the breadboard hides.
 
 Offer: *"Want me to collapse {place} into {place}? ~3 minutes to try."*
-or *"Want me to name failure UX as concrete places? ~3 minutes."*
+or *"Want me to name failure UX as concrete places? ~3 minutes."* or
+*"Want me to redraw this as a Patton Story map / Service blueprint?
+~5 minutes — surfaces journey or backstage work the breadboard
+hides."*
 
 ---
 
@@ -163,25 +183,43 @@ Draft boundaries + prototype evidence.
 - **Prototype-as-discovery** — Cagan's value + usability risks aren't
   resolved by talking. Capture what was already tested:
   - What did you build? (HTML mockup, Figma, paper sketch, narrated
-    demo)
+    demo, Wizard-of-Oz back-end)
   - Who saw it? Were they representative?
   - What did they struggle with that you didn't expect?
   - What did you change?
 
-If no prototype was tested, *offer* to build a 30-min HTML mockup that
-exercises the core action from Round 1. The skill can usually do this
-itself in minutes. Make the offer; respect the user's call.
+  Two named recipes when the prototype offer isn't generic:
+  - **Wizard of Oz** — fake the smart back-end with a human or a
+    static script. Tests value risk before you build the real thing.
+    Use when the bet hinges on "would users want this if it worked?"
+    rather than "can we build it?"
+  - **RITE method** (Medlock 2002) — Rapid Iterative Testing and
+    Evaluation. Test with one user, fix the obvious thing, test the
+    next user with the fix. Compresses a usability round from weeks
+    to a day. Use when the surface is small and the failures are
+    likely to be obvious.
 
-*Pull in when relevant: a Story map for journey-heavy work; a Service
-blueprint for cross-touchpoint flows; the Hook Model when retention is
-the goal.*
+If no prototype was tested, *offer* to build the cheapest version that
+exercises the core action from Round 1 — usually a 30-min HTML mockup,
+or a Wizard-of-Oz script when the value risk is the question. The
+skill can usually do this itself in minutes. Make the offer; respect
+the user's call.
+
+*Pull in when relevant: the Hook Model when retention is the goal;
+**Design Sprint** (Knapp et al., *Sprint*) when the user has a
+week-sized appetite — Map / Sketch / Decide / Prototype / Test as a
+named container for everything sketch covers.*
 
 Name your own weak spots: which boundary is softest (likeliest to
 creep), whether anti-goals are real or generic, whether prototype
-evidence is real or absent.
+evidence is real or absent, whether a Wizard-of-Oz would test value
+more cheaply than the planned build.
 
 Offer: *"Want me to spin up a 30-min HTML prototype of the core action?
-Tests Round 1's Ability claim cheaply."*
+Tests Round 1's Ability claim cheaply."* or *"Want me to draft a
+Wizard-of-Oz script that fakes the smart part? Tests value before we
+commit build."* or *"Appetite is a week — want me to plan this as a
+Design Sprint with day-by-day scope?"*
 
 ---
 

@@ -19,6 +19,11 @@ user.name` lowercased with dots. Artifact lands at
 
 ## Step 1 — Do the homework before asking the user anything
 
+This is the converging half of the second **Double Diamond** — turning
+shipped reality back into evidence for the next problem-space dive. Score
+closes the loop: outcomes re-measured, drop-off diagnosed, churn named as
+job-switching, and a ranked bet list handed back to the next pitch.
+
 Front-load context:
 
 - **All prior artifacts** — `pitch.md`, `sketch.md`, `ship.md`. Read
@@ -87,11 +92,11 @@ when data sources aren't reachable** — record the gap honestly.
 ### Frameworks: name them, encourage them, reward them, never force them
 
 The frameworks (JTBD outcome re-scoring with importance × satisfaction,
-demo walkthrough, Hook Model habit threshold + drop-off diagnosis +
-channel ranking, Start/Stop/Continue retrospective, blameless
-post-mortem RCA, churn analysis as "what did they hire instead",
-evidence-ranked bet list for the next pitch) are named in the proposal,
-not paraphrased. When a framework would sharpen the draft, the offer
+Google's HEART framework, System Usability Scale (SUS), demo walkthrough,
+Hook Model habit threshold + drop-off diagnosis + channel ranking,
+Start/Stop/Continue retrospective, blameless post-mortem RCA with Five
+Whys, churn analysis as "what did they hire instead", evidence-ranked
+bet list for the next pitch) are named in the proposal, not paraphrased. When a framework would sharpen the draft, the offer
 names it: *"Churn analysis isn't done. Want me to interview the three
 churned accounts CS flagged, or pull their session-end events from
 analytics? ~10 minutes."* When the user engages, Step 3 credits the
@@ -129,12 +134,31 @@ Draft progress against the original bet (not the spec).
 - **Sales / CS signal** — when reachable, pull deal-velocity changes
   and support-ticket trends since launch.
 
+Two named alternative frames when importance × satisfaction is too
+narrow:
+
+- **HEART framework** (Rodden, Hutchinson, Fu — Google, CHI 2010) —
+  Happiness, Engagement, Adoption, Retention, Task success, paired
+  with Goals → Signals → Metrics. Use when the bet covers a whole
+  surface, not a single outcome. The G-S-M structure forces the
+  "what would change tell us this is true?" question for each axis.
+- **System Usability Scale (SUS)** (Brooke 1996) — 10-question
+  Likert survey, scored 0–100. The standard usability number with
+  decades of comparative data. Use when usability was a named risk
+  in pitch.md and "did it get easier?" is the question.
+
 Name your own weak spots: which numbers are real vs. estimated, where
 sample size is too small to claim a trend, whether "the bet paid off"
-is grounded or vibes.
+is grounded or vibes, whether HEART or SUS would expose something
+importance × satisfaction misses.
 
 Offer: *"Want me to pull {real metric} from {tool}? ~3 minutes."* or
 *"Want me to walk the demo path now and report dead ends? ~5 minutes."*
+or *"Want me to re-frame this as HEART (Happiness, Engagement, Adoption,
+Retention, Task success) with Goals → Signals → Metrics? ~5 minutes —
+forces the 'what signal proves it' question per axis."* or *"Want me
+to draft a SUS survey and a target score? ~3 minutes — concrete number
+for usability."*
 
 ---
 
@@ -182,7 +206,11 @@ Draft retro + bet list for the next pitch.
   Not "improve communication."
 - **Blameless post-mortem RCA** — for incidents, hotfixes, rollbacks.
   The system failed, not the person. Action items must be concrete and
-  owned.
+  owned. Drill from symptom to cause with **Five Whys** (Toyota /
+  Sakichi Toyoda) — ask "why did this happen?" five times, each answer
+  becoming the next question. Stop when the answer is a system gap,
+  not a person. *Offer: "Want me to walk the incident through Five
+  Whys? ~5 minutes — surfaces the system gap, not the human error."*
 - **Churn analysis** — which *job* did churned users hire something
   else for? They didn't leave; they switched. Naming what they hired
   tells you what to build.
@@ -223,6 +251,8 @@ Then write `.vibeslop/{feature}/score.md`.
 
 - **Bet (from pitch.md):** ...
 - **Importance × satisfaction re-score:** ...
+- **HEART (if used):** _Happiness · Engagement · Adoption · Retention · Task success — with Goals → Signals → Metrics_
+- **SUS (if used):** _score 0–100, n=__
 - **Gap movement (narrowed / remained / emerged):** ...
 - **Time-to-value vs target:** ...
 - **Switching behavior:** ...
