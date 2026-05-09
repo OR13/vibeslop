@@ -120,7 +120,9 @@ The skills share six assumptions. Knowing them upfront tells you what to expect 
 
 ## THE TOOLBOX
 
-The skills aren't a methodology with a fixed framework count. They're a peer thinking partner that draws on a growing library — Working Backwards, Cagan's four risks, JTBD, B=MAT, Fogg's six simplicity factors, the Hook Model, Shape Up appetites, Secure Coding, **Design Thinking** (Empathize / Define / Ideate / Prototype / Test), the **Double Diamond** (the diverge-converge frame around the wheel), **Lean UX hypothesis statements**, the **Design Sprint**, **Wizard of Oz** + **RITE**, Patton's **Story map**, Shostack's **Service blueprint**, Google's **HEART** framework, the **System Usability Scale (SUS)**, **Five Whys**, more — and reaches for whichever sharpens the current draft.
+The skills aren't a methodology with a fixed framework count. They're a peer thinking partner that draws on a growing library — Working Backwards, Cagan's four risks, JTBD, B=MAT, Fogg's six simplicity factors, the Hook Model, Shape Up appetites, Secure Coding, **Design Thinking** (Empathize / Define / Ideate / Prototype / Test), the **Double Diamond** (the diverge-converge frame around the wheel), **Lean UX hypothesis statements**, the **Design Sprint**, **Wizard of Oz** + **RITE**, Patton's **Story map**, Shostack's **Service blueprint**, Google's **HEART** framework, the **System Usability Scale (SUS)**, **Five Whys**, **Cooper's persona-driven design** with Microsoft's **persona spectrum**, more — and reaches for whichever sharpens the current draft.
+
+Persona-driven design threads through the entire cycle — pitch synthesizes the personas, sketch / ship / score argue from them by name. See [`docs/persona-driven-design.md`](docs/persona-driven-design.md) for the full pattern: how to make a good persona, how to interact with one while designing, common failure modes.
 
 The toolbox grows over time. PRs adding frameworks (with citations) welcome.
 

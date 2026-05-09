@@ -27,10 +27,13 @@ contact with a real user.
 
 Front-load context:
 
-- **pitch.md** — read if present. Anchor the design to the bet's outcome
-  metric, struggling moment, scope, and anti-goals. If pitch is missing,
-  call that out — the design will be guessing about what counts as
-  success.
+- **pitch.md + personas.md** — read if present. Anchor the design to
+  the bet's outcome metric, struggling moment, scope, anti-goals — and
+  to the **primary persona by name**. The persona is the through-line:
+  every B=MAT, every topology choice, every prototype is *for that
+  persona*. If pitch is missing, call that out — the design will be
+  guessing about what counts as success. If the persona section is
+  missing, name it as a soft spot and design provisionally.
 - **Prior design artifacts** — read everything else under
   `.vibeslop/{feature}/`. Use `git log` on those files to see
   how prior runs evolved.
@@ -76,7 +79,8 @@ following for your review."
 
 The frameworks (B=MAT, Fogg's six simplicity factors, breadboarding +
 fat-marker sketches, Hook Model, Service blueprint, Story map, Design
-Thinking's *Ideate/Prototype/Test*, Design Sprint, Wizard of Oz, RITE)
+Thinking's *Ideate/Prototype/Test*, Design Sprint, Wizard of Oz, RITE,
+**Cooper's persona walk-through** with Microsoft's persona spectrum)
 are named in the proposal, not paraphrased. When the skill senses a soft spot that
 a framework would sharpen, the offer names the framework: *"B=MAT is
 where I have the most guesswork — the Trigger is a placeholder. Want to
@@ -107,11 +111,21 @@ Draft the journey: before/after, core action, B=MAT.
 - **Core action** — name the *single* action the user must take. Verb +
   object. Step count. If you can't name one, the design isn't focused
   enough — flag that.
-- **B=MAT** — Behavior happens when **Motivation, Ability, and Trigger**
-  converge:
-  - **Motivation** — why would the user do this *right now*?
-  - **Ability** — how easy is the action? Count steps.
-  - **Trigger** — what cues it? Internal emotion, external prompt, habit?
+- **B=MAT for {primary persona}** — Behavior happens when **Motivation,
+  Ability, and Trigger** converge — *for the primary persona named in
+  pitch.md, in their actual context*. Generic-user B=MAT is the most
+  common way this round goes wrong:
+  - **Motivation** — why would *{persona name}* do this *right now*,
+    given their life / end / experience goals from pitch.md?
+  - **Ability** — how easy is the action *in {persona's} context*
+    (gloved hands? interrupted? on a phone in transit?)? Count steps.
+  - **Trigger** — what cues it *for {persona name}* — their internal
+    emotion, an external prompt, a habit they already have?
+
+  *Persona spectrum check:* on the most load-bearing dimension, does the
+  B=MAT still hold under the permanent / temporary / situational range?
+  If Sarah uses one hand because of a long-term injury vs. because she's
+  holding a pipette, the design that serves both is the one to keep.
 
 *If AI surface: what is the AI doing inside the core action — suggesting,
 deciding, executing? Where does the user accept, override, undo?*
@@ -156,17 +170,32 @@ about spacing, you're designing too early — call it out.
 pattern (suggestion vs decision, transparency, undo, refusal/slow/wrong
 as named places)?*
 
+**Persona walk-through (Cooper)** — once the topology is drafted, walk
+it as the primary persona by name. For each place, ask:
+
+- Why would *{persona name}* be here?
+- What is *{persona name}* trying to do?
+- What's *{persona name}'s* next step?
+- What would make *{persona name}* stop trusting the product right now?
+
+Vague answers mean a vague design. Surface the vagueness as a finding,
+not a soft spot to paper over. The walk-through usually shifts at least
+one place or affordance — credit the persona when it does.
+
 Name your own weak spots: which simplicity factor you're least sure
 about, whether the topology is genuinely fat-marker or sneaking into
 pixel-land, whether failure UX is named places or hidden as "edge
 cases," whether a Story map or Service blueprint would expose
-something the breadboard hides.
+something the breadboard hides, whether the persona walk-through
+exposed a place where the persona's goals don't align with the design.
 
 Offer: *"Want me to collapse {place} into {place}? ~3 minutes to try."*
 or *"Want me to name failure UX as concrete places? ~3 minutes."* or
 *"Want me to redraw this as a Patton Story map / Service blueprint?
 ~5 minutes — surfaces journey or backstage work the breadboard
-hides."*
+hides."* or *"Want me to walk the topology as {primary persona} step
+by step and report friction? ~5 minutes — usually surfaces 1–2 places
+that don't survive the walk."*
 
 ---
 
@@ -184,7 +213,10 @@ Draft boundaries + prototype evidence.
   resolved by talking. Capture what was already tested:
   - What did you build? (HTML mockup, Figma, paper sketch, narrated
     demo, Wizard-of-Oz back-end)
-  - Who saw it? Were they representative?
+  - Who saw it? **Were they a match for the primary persona?** A
+    prototype tested with the wrong persona is theater. *"5 internal
+    engineers gave it a thumbs up"* is not evidence about Sarah the
+    lab manager.
   - What did they struggle with that you didn't expect?
   - What did you change?
 

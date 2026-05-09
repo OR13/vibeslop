@@ -25,9 +25,11 @@ Council's *Deliver*: real users, real channels, real noise.
 
 Front-load context:
 
-- **pitch.md + sketch.md** — read if present. Anchor the launch to the
-  bet's struggling moment, the core action and topology, the appetite,
-  and the threat model.
+- **pitch.md + sketch.md + personas.md** — read if present. Anchor
+  the launch to the bet's struggling moment, the core action and
+  topology, the appetite, the threat model — and to the **primary
+  persona by name**. Launch messaging that doesn't speak to a specific
+  persona becomes generic feature-tour copy.
 - **Spec-kit artifacts** — when `.specify/` exists, also read
   `specs/<feature>/spec.md`, `plan.md`, `tasks.md` for what was
   specified vs. what shipped.
@@ -97,7 +99,8 @@ unilaterally.
 The frameworks (JTBD launch messaging from struggling moment, Hook
 Model first-cycle activation, Shape Up rollout staging, canary release,
 feature flags, blameless rollback criteria, sales enablement around the
-job) are named in the proposal, not paraphrased. When a framework would
+job, **Cooper's primary-persona-led messaging**) are named in the
+proposal, not paraphrased. When a framework would
 sharpen the draft, the offer names it: *"The first-cycle Hook Model
 isn't designed for day-one. Want me to draft the trigger → action →
 reward → invest sequence for the first session? ~5 minutes."* When the
@@ -118,29 +121,42 @@ Accept whatever the user gives back, move on. Approve, refine, or pass
 
 ---
 
-**Round 1 — Messaging (JTBD)**
+**Round 1 — Messaging (JTBD + primary persona)**
 
-Draft launch messaging from the struggling moment.
+Draft launch messaging from the *primary persona's* struggling moment.
+Generic struggling-moment messaging often reads okay but lands flat —
+copy that names the persona's actual context lands harder.
 
-- **Struggling-moment headline** — lead with the pain, not the feature.
-  *"Tired of squinting at bright screens?"* not *"We added dark mode."*
-- **Job-framed pitch** — verb + object + context. One line. The pitch
-  the customer would say back to a friend.
-- **Social proof** — real users who completed the job successfully.
-  Pull testimonials / case studies from CRM if reachable.
+- **Struggling-moment headline** — lead with *the primary persona's*
+  pain, not the feature. *"Tired of squinting at bright screens?"* is
+  closer than *"We added dark mode"* — but *"Sarah, mid-experiment with
+  gloves on, can finally re-run yesterday's protocol in two taps"* is
+  closer still when the persona is named in pitch.md.
+- **Job-framed pitch** — verb + object + context, *anchored to the
+  primary persona's context*. One line. The pitch the persona would
+  say back to a colleague who matches them.
+- **Social proof** — real users who completed the job successfully —
+  ideally users who match the primary persona. *"5 internal engineers"*
+  is not social proof for Sarah the lab manager. Pull testimonials /
+  case studies from CRM, filtering for the persona segment.
 - **Channel strategy** — where this message lands (email, in-app, blog,
-  social, sales). Match channel to where the struggling moment is most
-  alive.
-- **Sales enablement** — train sales to position around the job
-  statement, not the feature tour. Demo scripts mirror the user's
-  struggling moment.
+  social, sales). Match channel to **where the primary persona lives**:
+  if Sarah reads industry newsletters at lunch but never opens
+  promotional in-app banners, channel strategy follows.
+- **Sales enablement** — train sales to position around *the primary
+  persona's* job statement, not the feature tour. Demo scripts mirror
+  the persona's struggling moment.
 
-Name your own weak spots: which line is feature-led not job-led, where
-social proof is invented or thin, whether the channel strategy is
-grounded in real data.
+Name your own weak spots: which line is feature-led not persona-led,
+where the persona's context is implicit instead of named, where social
+proof comes from a different persona segment than the primary, whether
+the channel strategy is grounded in where the primary persona actually
+spends their time.
 
-Offer: *"Want me to draft the email and in-app copy from the struggling
-moment? ~5 minutes."*
+Offer: *"Want me to draft the email and in-app copy from {primary
+persona}'s struggling moment by name? ~5 minutes."* or *"Want me to
+audit existing CRM testimonials for matches to the primary persona
+and pull only those? ~5 minutes."*
 
 ---
 

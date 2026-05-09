@@ -27,8 +27,8 @@ Front-load context. The user should land on a grounded proposal, not an empty
 prompt. Pull what's cheaply available:
 
 - **Prior artifacts** — read everything under `.vibeslop/{feature}/`
-  if it exists. Use `git log -- .vibeslop/{feature}/` to see how
-  prior runs evolved.
+  if it exists, including any `personas.md`. Use `git log --
+  .vibeslop/{feature}/` to see how prior runs evolved.
 - **Git** — last ~20 commits on this branch and on main; current diff if any.
 - **Project conventions** — `README.md`, `AGENTS.md`, `CLAUDE.md`. Note
   declared trackers / observability / stack.
@@ -70,7 +70,8 @@ following for your review."
 
 The frameworks (Working Backwards, Cagan's four risks, JTBD, Shape Up
 appetite, Opportunity Solution Tree, Design Thinking's *Empathize/Define*,
-Lean UX hypothesis statement) are named in the proposal, not
+Lean UX hypothesis statement, **Cooper's persona-driven design** with
+Microsoft's persona spectrum) are named in the proposal, not
 paraphrased. When the skill senses a soft spot that a framework would
 sharpen, the offer names the framework: *"Cagan's value risk is where I'm
 guessing — want to spend 5 minutes on the eval criterion that earns
@@ -89,20 +90,68 @@ which.
 
 ---
 
-**Round 1 — The bet**
+**Round 1 — Who, then the bet**
 
-Draft a Working Backwards PR-FAQ + cost of inaction.
+Round 1 has two halves: *whose* problem we're solving, then *what* the bet
+is for them. Skipping the first half makes the press release generic; that
+generic-ness is one of the most common failure modes a pitch can have.
 
-- **Press release** — one paragraph. Customer-visible value in plain
-  language.
-- **Customer FAQ** — 3–5 Q&As that a skeptical user would ask.
-- **Cost of inaction** — what happens if we don't do this for 6 months?
+**1a. Personas (Cooper)** — synthesize the user this bet serves. Cooper's
+persona-driven design says: a concrete user with goals beats an abstract
+"customer" every time. Draft three pieces:
 
-Name your own weak spots: which Q has no good answer yet, which sentence in
-the press release is hand-waved, whether "cost of inaction" is real or
-rhetorical. *Pull in when relevant: a JTBD job statement (`verb + object +
-context`) when the who/why is fuzzy; an Opportunity Solution Tree pointer
-when this bet sits inside a larger opportunity space.*
+- **Primary persona** — the *one* user the design serves. Name +
+  one-sentence elevator + three-tier goals (life / end / experience) +
+  current job-completion path + where they get stuck. A real quote from
+  research is worth more than a paragraph of synthesis. If research is
+  thin, mark the persona **provisional** — never invent.
+- **Secondary personas (1–2)** — served, but never at the primary's
+  expense. One-line elevator each, plus their *end goal* and why they're
+  secondary not primary.
+- **Anti-persona** — who we'd be wrong to design for, and why. Naming
+  this catches scope drift before it starts.
+- **Persona spectrum (Microsoft Inclusive Design)** — for the primary
+  persona, name the dimension that matters most (permanent / temporary /
+  situational). Designs that hold up across the spectrum tend to hold up
+  for everyone.
+
+For each persona, lead with **goals (life / end / experience)**, not
+demographics. *"Sarah is 42"* is useless; *"Sarah is mid-experiment with
+gloves on 60% of her workday"* is designable.
+
+The deeper reference — including the artifact template, interaction
+patterns, and failure modes — lives at
+[`docs/persona-driven-design.md`](https://github.com/OR13/vibeslop/blob/main/docs/persona-driven-design.md).
+Read it once and keep it as working memory.
+
+Name your own weak spots in the persona draft: how many real
+conversations the persona is grounded in (be honest — "based on three CS
+notes" beats "based on user research"); which goal level is a guess;
+whether the spectrum is named or hand-waved; whether the anti-persona is
+real or generic.
+
+Offer: *"Persona is provisional — based on N support tickets, no live
+conversations. Want me to flag the gaps explicitly, or pull more
+behavioral data from {tracker / analytics} first? ~5 minutes."*
+
+**1b. Working Backwards (PR-FAQ + cost of inaction)** — *now* draft for
+the primary persona by name.
+
+- **Press release** — one paragraph. The primary persona's win, in plain
+  language. *"Sarah, mid-experiment, can reproduce yesterday's protocol
+  without re-deriving the parameters — in two taps without removing her
+  gloves."*
+- **Customer FAQ** — 3–5 Q&As the primary persona would actually ask.
+- **Cost of inaction** — what happens to the primary persona if we don't
+  do this for 6 months?
+
+Name your own weak spots: which Q has no good answer yet, which sentence
+in the press release is hand-waved, whether "cost of inaction" is real or
+rhetorical, whether the press release is anchored to the primary persona
+or drifted into generic-customer language. *Pull in when relevant: a JTBD
+job statement (`verb + object + context`) when the who/why is still fuzzy
+even with the persona; an Opportunity Solution Tree pointer when this bet
+sits inside a larger opportunity space.*
 
 Offer: *"Want to push on {weakest item}? ~3 minutes."* Accept yes / no / a
 specific direction.
@@ -114,10 +163,12 @@ specific direction.
 Draft Cagan's four risks. Be specific where you can; flag where you're
 guessing.
 
-- **Value** — will users want it? *(If AI surface: eval criterion that earns
-  trust.)*
-- **Usability** — will they figure it out? *(If AI surface: UX for wrong /
-  slow / refused outputs.)*
+- **Value** — will the *primary persona* want it? Argue from the
+  persona's end goal, not from generic users. *(If AI surface: eval
+  criterion that earns the primary persona's trust.)*
+- **Usability** — will the primary persona figure it out *in their actual
+  context* (gloves on, mid-task, interrupted)? *(If AI surface: UX for
+  wrong / slow / refused outputs.)*
 - **Feasibility** — can engineering build it in the appetite? *(If AI
   surface: latency budget, fallback model.)*
 - **Viability** — does it work for the business? *(If AI surface: cost
@@ -162,14 +213,31 @@ where gaps remain.
 Then write `.vibeslop/{feature}/pitch.md`. The artifact carries the
 soft spots forward visibly — see template — rather than hiding them.
 
+When the persona section is substantial (3+ personas, real research
+behind it), prefer a sidecar file at `.vibeslop/{feature}/personas.md`
+using the template in
+[`docs/persona-driven-design.md`](https://github.com/OR13/vibeslop/blob/main/docs/persona-driven-design.md).
+Otherwise inline the personas in the pitch artifact below.
+
 ```
 # Pitch: {feature}
 
 **Owner**: {owner} | **Date**: {YYYY-MM-DD}
 
+## Personas
+
+- **Primary:** {Name} — {one-line}
+  - *Goals:* life: ... · end: ... · experience: ...
+  - *Today's job-completion path:* ...
+  - *Where they get stuck:* ...
+  - *Spectrum (perm/temp/situational):* ...
+- **Secondary:** {Name} — {one-line + end goal} _[why secondary, not primary]_
+- **Anti-persona:** {Name} — {who, why we'd be wrong to design for them}
+- **Sources / provenance:** {N interviews / analytics / CS notes — be honest}
+
 ## Press release
 
-{paragraph}
+{paragraph — anchored to the primary persona by name}
 
 ## Customer FAQ
 
@@ -178,7 +246,7 @@ soft spots forward visibly — see template — rather than hiding them.
 
 ## Cost of inaction
 
-{what happens if we don't}
+{what happens to the primary persona if we don't}
 
 ## Risks
 
